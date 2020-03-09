@@ -10,15 +10,14 @@
 
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-
     <link rel="stylesheet" href="{% static 'app/css/bootstrap4-neon-glow.min.css' %}">
-
+    <link rel="stylesheet" href="{% static 'app/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/flipclock.css' %}">
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/font-hack/2.020/css/hack.min.css'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-    <link rel="stylesheet" href="{% static 'app/css/main.css' %}">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+
 </head>
 
 <body>
@@ -319,10 +318,6 @@
                                 <a target="_blank" href="#!" class="btn btn-outline-secondary btn-shadow"><span class="fa fa-download mr-2"></span>Download</a>
                                 <a href="#hint" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow"><span class="far fa-lightbulb mr-2"></span>Hint</a>
                                 <div class="input-group mt-3">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio1_p6" name="customRadio" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio1_p6" aria-required="">Very Easy</label>
-                                    </div>
                                     <div class="ht-tm-element custom-control custom-radio">
                                         <input type="radio" id="customRadio2_p6" name="customRadio" class="custom-control-input">
                                         <label class="custom-control-label" for="customRadio2_p6">Easy</label>
@@ -334,10 +329,6 @@
                                     <div class="ht-tm-element custom-control custom-radio">
                                         <input type="radio" id="customRadio4_p6" name="customRadio" class="custom-control-input">
                                         <label class="custom-control-label" for="customRadio4_p6">Hard</label>
-                                    </div>
-                                    <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio5_p6" name="customRadio" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio5_p6">Very Hard</label>
                                     </div>
                                 </div>
                                 <div class="input-group mt-3">
@@ -390,14 +381,14 @@
 
             function getBarChartData(i) {
                 return barChartData = {
-                    labels: ['Easy1', 'Easy2', 'Medium3', 'Hard4', 'Hard5'],
+                    labels: ['Easy', 'Medium', 'Hard'],
                     datasets: [{
                         label: 'Dataset 1',
                         backgroundColor: [
-                            '#17b06b', '#17b06b', '#ffce56', '#ef121b', '#ef121b'
+                            '#17b06b', '#ffce56', '#ef121b' 
                         ],
                         borderColor: [
-                            '#17b06b', '#17b06b', '#ffce56', '#ef121b', '#ef121b'
+                            '#17b06b', '#ffce56', '#ef121b'
                         ],
                         borderWidth: 1,
                         data: dataset[i - 1]
@@ -443,6 +434,9 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <script src="{% static 'app/js/flipclock.js' %}"></script>
+        <script src="{% static 'app/js/questionLogic.js' %}"></script>
 
 </body>
 
