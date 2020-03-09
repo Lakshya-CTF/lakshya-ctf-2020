@@ -55,3 +55,44 @@ class Questions(models.Model):
 class QuestionsAdmin(ImportExportActionModelAdmin):
 	
 	pass
+
+
+class Events(models.Model):
+	
+    receiptid = models.CharField(db_column='ReceiptID', primary_key=True, max_length=100)  # Field name made lowercase.
+    college = models.CharField(max_length=250)
+    slot = models.CharField(max_length=20, blank=True, null=True)
+    noofmem = models.IntegerField()
+    domain = models.CharField(max_length=250)
+    city = models.CharField(db_column='City', max_length=100)  # Field name made lowercase.
+    district = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    date = models.CharField(db_column='Date', max_length=30)  # Field name made lowercase.
+    name1 = models.CharField(max_length=100)
+    gender = models.CharField(db_column='Gender', max_length=20)  # Field name made lowercase.
+    email1 = models.CharField(max_length=100)
+    phone1 = models.BigIntegerField()
+    name2 = models.CharField(max_length=100)
+    gender2 = models.CharField(db_column='Gender2', max_length=20)  # Field name made lowercase.
+    email2 = models.CharField(max_length=100)
+    phone2 = models.BigIntegerField()
+    name3 = models.CharField(max_length=100)
+    gender3 = models.CharField(db_column='Gender3', max_length=20)  # Field name made lowercase.
+    email3 = models.CharField(max_length=100)
+    phone3 = models.BigIntegerField()
+    name4 = models.CharField(max_length=100)
+    gender4 = models.CharField(db_column='Gender4', max_length=20)  # Field name made lowercase.
+    email4 = models.CharField(max_length=100)
+    phone4 = models.BigIntegerField()
+    name5 = models.CharField(max_length=100)
+    gender5 = models.CharField(db_column='Gender5', max_length=20)  # Field name made lowercase.
+    email5 = models.CharField(max_length=100)
+    phone5 = models.BigIntegerField()
+    name6 = models.CharField(max_length=100)
+    gender6 = models.CharField(db_column='Gender6', max_length=10)  # Field name made lowercase.
+    email6 = models.CharField(max_length=100)
+    phone6 = models.BigIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'events'

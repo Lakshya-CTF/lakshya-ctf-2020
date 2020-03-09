@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from .models import Questions,Team 
+from .models import Questions,Team, Events
 
 import time 
 
@@ -48,11 +48,16 @@ def register(request):
 	team = Team()
 	if request.method == 'POST':
 
-		receipt_id = request.POST.get('recieptid')
+		receiptid = request.POST.get('recieptid')
 		team.username = request.POST.get('teamname')
 		team.password = make_password(request.POST.get('password'))
 		
+		query_set = Events.objects.using('receipts').filter(receiptid=receiptid)
+
 		try:
+			if query_set is None:
+				raise TypeError
+				
 			team.clean_fields()
 			team.save()
 		except Exception as e:
