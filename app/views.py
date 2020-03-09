@@ -48,7 +48,7 @@ def register(request):
 	team = Team()
 	if request.method == 'POST':
 
-		reciept_id = request.POST.get('recieptid')
+		receipt_id = request.POST.get('recieptid')
 		team.username = request.POST.get('teamname')
 		team.password = make_password(request.POST.get('password'))
 		
