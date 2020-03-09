@@ -47,10 +47,10 @@ def teamlogin(request):
 def register(request):
 	team = Team()
 	if request.method == 'POST':
+
+		reciept_id = request.POST.get('recieptid')
 		team.username = request.POST.get('teamname')
-		team.email1 = request.POST.get('email1')
 		team.password = make_password(request.POST.get('password'))
-		team.category = request.POST.get('category')
 		
 		try:
 			team.clean_fields()
@@ -156,44 +156,4 @@ def validate_username(request):
 
 
 
-# challenges 
-
-
-# def useragent(request):
-# 	if request.method == 'GET':
-# 		if request.META['HTTP_USER_AGENT'].lower() == 'hacker':
-# 			return HttpResponse('<h3> Here is the flag - pict_CTF{53l3c71v3_4b0u7_u53r5}</h3>')
-# 		else:
-# 			return HttpResponse('<h3> We are selective about the users we allow to view our secrets.<br> Only "hacker" agents are allowed. <br> You are not the right "agent" to view this page! </h3>')
-
-
-
-@gzip_page
-@csrf_exempt
-def cookielogin(request):
-	flag = {'flag':'You are not admin!'}		
-	if request.method == 'POST':
-		email = request.POST.get('email')
-		password = request.POST.get('password')
-		if request.COOKIES['admin'].lower() == 'true' and password == 'rockyouinlalaland':
-			flag = {'flag':'pict_CTF{1n53cur3_c00k13}'}
-			return render(request,'app/cookielogin.html',flag)	
-
-	response = render(request,'app/cookielogin.html',flag)
-	response.set_cookie('admin','false')
-	return response
-	
-
-
-def hiddenfield(request):
-	if request.method == 'POST':
-		username = request.POST.get('username')
-		password = request.POST.get('password')
-		restricted = request.POST.get('restricted').lower()
-		if username == 'admin@lakshya.com' and password == 'lakshya999' and restricted == 'false':
-			return render(request,'app/hidden.html',{'flag':'pict_CTF{h1dd3n_f13ld5}'})
-		else:
-			return render(request,'app/hidden.html',{'flag':'Unauthorized access!'})
-
-	return render(request,'app/hidden.html',{'flag':''})
 

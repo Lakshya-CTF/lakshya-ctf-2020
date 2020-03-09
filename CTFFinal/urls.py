@@ -36,17 +36,7 @@ urlpatterns = [
     url(r'^hint/',views.hint),
     url(r'^uservalidator/',views.validate_username),
     url(r'^instructions/',views.instructions),
-    #url(r'^secret_page/',views.useragent),
-    url(r'^robots.txt/',TemplateView.as_view(template_name='app/robots.html')),
-    url(r'^flag_robots_file/',TemplateView.as_view(template_name= 'app/flag_robots_file.html')),
-    url(r'^flag-login/',TemplateView.as_view(template_name='app/inspect_login.html')),
-    url(r'^challenge-page/',TemplateView.as_view(template_name='app/page_file.html')),
-    url(r'^challenge-login/',views.cookielogin),
-    url(r'^challenge-login-1/',views.hiddenfield),
-    url(r'^infinite/',TemplateView.as_view(template_name='app/infinite.html')),
     url(r'^about/',views.about),
-    url(r'^sitemap.xml',TemplateView.as_view(template_name='app/sitemap.xml'))
-
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

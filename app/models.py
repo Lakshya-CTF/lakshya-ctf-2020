@@ -6,17 +6,15 @@ from import_export.admin import ImportExportActionModelAdmin
 
 
 # Create your models here. Use set_password 
-JUNIOR = 'JR'
-SENIOR = 'SR'
-CATEGORY_CHOICE = ((JUNIOR,'Junior'),(SENIOR,'Senior'))
+EASY = 'EA'
+MEDIUM = 'ME'
+HARD = 'HA'
+
+CATEGORY_CHOICE = ((EASY,'Easy'),(MEDIUM,'Medium'),(HARD,'Hard'))
 
 class Team(AbstractUser):
-	email1 = models.EmailField()
-	email2 = models.EmailField(default='johndoe@example.com')
-	phone1 = models.IntegerField(default=0)
-	phone2 = models.IntegerField(default=0)
+
 	points = models.IntegerField(default=0)
-	category = models.CharField(max_length=2,choices=CATEGORY_CHOICE,default=JUNIOR)
 	timeRequired = models.FloatField(default=0)
 	played = models.BooleanField(default=False)
 
@@ -28,20 +26,22 @@ class Team(AbstractUser):
 
 
 class TeamAdmin(admin.ModelAdmin):
-	list_display = ('username','category','timeRequired','points')
+
+	list_display = ('username','timeRequired','points')
 	readonly_fields = ('password','points','timeRequired')
-	search_fields = ['username','timeRequired','points','email1','email2']
+	search_fields = ['username','timeRequired','points']
 
 
 class Questions(models.Model):
-	questionId = models.IntegerField(default=0)
+
+	questionId = models.AutoField(primary_key = True)
 	questionDescription = models.TextField()
 	questionPoints = models.IntegerField(default=0)
-	questionCategory = models.CharField(max_length=2,choices=CATEGORY_CHOICE,default=JUNIOR)
 	questionData = models.FileField(blank=True)
-	questionFlag = models.CharField(max_length=50,default='pict_CTF{}')
+	questionFlag = models.CharField(max_length=50,default='lakshya_CTF{hack_me_now}')
 	questionHint = models.TextField(default="Sample Hint")
 	questionSolvers = models.IntegerField(default=0)
+	questionDifficulty = models.CharField(max_length=2,choices=CATEGORY_CHOICE,default=EASY)
 
 
 	def __str__(self):
@@ -53,4 +53,5 @@ class Questions(models.Model):
 
 
 class QuestionsAdmin(ImportExportActionModelAdmin):
+	
 	pass

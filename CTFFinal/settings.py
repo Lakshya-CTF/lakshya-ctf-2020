@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '0f22298fabf5dff32a7cbc73613f0106dfb67a4d9bb35424'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -131,6 +131,6 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 django_heroku.settings(locals())
