@@ -58,7 +58,7 @@ class QuestionsAdmin(ImportExportActionModelAdmin):
 
 
 class Events(models.Model):
-	
+
     receiptid = models.CharField(db_column='ReceiptID', primary_key=True, max_length=100)  # Field name made lowercase.
     college = models.CharField(max_length=250)
     slot = models.CharField(max_length=20, blank=True, null=True)
