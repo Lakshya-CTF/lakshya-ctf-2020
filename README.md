@@ -1,7 +1,7 @@
 ![Lakshya CTF](logo.png)
 
 
-Lakshya CTF is a free online platform to test and advance skills in Penetration Testing and Cybersecurity. This repository hosts the codebase for Lakshya CTF's website for 2019.
+Lakshya CTF is a free online platform to test and advance skills in Penetration Testing and Cybersecurity. This repository hosts the codebase for Lakshya CTF's website for 2020.
 
 The project can be hosted as it is or can be extended as per requirements.
 
