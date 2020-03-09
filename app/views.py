@@ -57,10 +57,10 @@ def register(request):
 			team.save()
 		except Exception as e:
 			messages.error(request,'Invalid form submission! ')
-			return render(request,'app/registration.html')
+			return render(request,'app/register.html')
 		login(request,team)
 		return render(request,'app/instructions.html')
-	return render(request,'app/registration.html')
+	return render(request,'app/register.html')
 
 
 @gzip_page
@@ -110,7 +110,7 @@ def quest(request):
 				messages.error(request,'Already solved!')
 		else: 
 			messages.error(request,'Invalid flag!')
-	return render(request,'app/quests-round1.html',context = {'challenges':questions})
+	return render(request,'app/quests.html',context = {'challenges':questions})
 
 @login_required(login_url='/login/')
 @gzip_page
