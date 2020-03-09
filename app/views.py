@@ -31,9 +31,7 @@ def teamlogin(request):
 	if request.method == 'POST':
 		username = request.POST.get('teamname')
 		password = request.POST.get('password')
-		print(username,password)
 		team = authenticate(username=username,password=password)
-		print(team)
 		if team is not None:
 			if team.played == False:
 				login(request,team)
@@ -52,13 +50,9 @@ def register(request):
 
 		receiptid = request.POST.get('receiptid')
 		team.username = request.POST.get('teamname')
-		print(request.POST.get('passwd'))
 		team.password = make_password(request.POST.get('passwd'))
-		print(team.password)
 
 		query_count = Events.objects.using('receipts').filter(receiptid=receiptid).count()
-		print(query_count)
-		print(receiptid)
 		try:
 			if query_count == 0:
 				raise TypeError
@@ -101,11 +95,11 @@ def quest(request):
 		request.session['timer'] = time.time()
 		request.session['solved'] = [0 for i in range(challenges)]
 		request.session['hints'] = [0 for i in range(challenges)]
-	questions = Questions.objects.filter(questionCategory=request.user.category)
+	questions = Questions.objects.all()
 	if request.method == 'POST':
 		flag = request.POST.get('flag')
 		flag_id = int(request.POST.get('qid'))
-		question = Questions.objects.get(questionId=flag_id,questionCategory=request.user.category)
+		question = Questions.objects.get(questionId=flag_id)
 		if flag == question.questionFlag:
 			if not request.session['solved'][flag_id]:
 				request.user.points+=question.questionPoints
@@ -125,7 +119,7 @@ def quest(request):
 @login_required(login_url='/login/')
 @gzip_page
 def leaderboard(request):
-	teams = Team.objects.filter(category=request.user.category).exclude(timeRequired=0.0).order_by('-points','timeRequired')[:10]
+	teams = Team.objects.all().exclude(timeRequired=0.0).order_by('-points','timeRequired')[:10]
 	leaderboard = list()
 	for rank,team in zip(range(1,len(teams)+1),teams):
 		leaderboard.append((rank,team))
@@ -142,20 +136,23 @@ def timer(request):
 @csrf_protect
 def hint(request):
 	if request.method == 'POST':
+
 		hint_id = int(request.POST.get('hintid'))
-		print(request.POST.get('hintid'))
-		question = Questions.objects.get(questionId=hint_id,questionCategory=request.user.category)
+		question = Questions.objects.get(questionId=hint_id)
 		questionHint = question.questionHint
-		print(hint_id,questionHint)
 		questionPoints = question.questionPoints
+
 		if not request.session['hints'][hint_id]:
+
 			request.session['hints'][hint_id] = 1
 			request.user.points-=int(0.1*questionPoints)
+
 		request.user.save()
 		request.session.save()
 		return JsonResponse({'hint':questionHint,'points':request.user.points})
 
 def validate_username(request):
+	
     teamname = request.GET.get('teamname', None)
     data = {
         'is_taken': Team.objects.filter(username__iexact=teamname).exists()
