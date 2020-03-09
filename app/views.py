@@ -31,7 +31,9 @@ def teamlogin(request):
 	if request.method == 'POST':
 		username = request.POST.get('teamname')
 		password = request.POST.get('password')
+		print(username,password)
 		team = authenticate(username=username,password=password)
+		print(team)
 		if team is not None:
 			if team.played == False:
 				login(request,team)
@@ -48,14 +50,17 @@ def register(request):
 	team = Team()
 	if request.method == 'POST':
 
-		receiptid = request.POST.get('recieptid')
+		receiptid = request.POST.get('receiptid')
 		team.username = request.POST.get('teamname')
-		team.password = make_password(request.POST.get('password'))
-		
-		query_set = Events.objects.using('receipts').filter(receiptid=receiptid)
+		print(request.POST.get('passwd'))
+		team.password = make_password(request.POST.get('passwd'))
+		print(team.password)
 
+		query_count = Events.objects.using('receipts').filter(receiptid=receiptid).count()
+		print(query_count)
+		print(receiptid)
 		try:
-			if query_set is None:
+			if query_count == 0:
 				raise TypeError
 
 			team.clean_fields()

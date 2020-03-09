@@ -138,6 +138,8 @@ MEDIA_URL = 'Uploads/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+AUTH_USER_MODEL = "app.Team" 
+
 STATIC_URL = '/static/'
 
 
