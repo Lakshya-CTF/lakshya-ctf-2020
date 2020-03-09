@@ -59,9 +59,7 @@
                     <p class="text-grey text-spacey hackerFont lead mb-5">
                         Join the community and be part of the future of the information security industry.
                     </p>
-                    <form class="needs-validation" novalidate  method="POST" action='/register/'>
-                    {% csrf_token %}
-                    {% for message in messages %}
+                {% for message in messages %}
                   <div class="alert alert-dismissible fade show alert-success" role="alert">
                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                      <span aria-hidden="true">×</span>
@@ -69,10 +67,12 @@
                      <strong>{{ message }}</strong>
                   </div>
                   {% endfor %}
+                    <form class="needs-validation" novalidate  method="POST" action='/register/'>
+                    {% csrf_token %}
                     <div class="row  hackerFont">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="reciept_id" placeholder="RecieptId(ex. EINC-5e5a93e4318db)">
+                                <input type="text" class="form-control" id="recieptid" placeholder="RecieptId(ex. EINC-5e5a93e4318db)">
                                 <small id="reciept_id_help" class="form-text text-muted">Don't have reciept id? Register <a target="_blank" href="http://pictinc.org/subevents_register/online/index1.php">here</a></small>
                             </div>
                             <div class="form-group">
@@ -88,14 +88,13 @@
                             </div>
                         </div>
                     </div>
-                    </form>
+                   
                 </div>
             </div>
             <div class="row">
                 <div class="col-xl-12">
-                    <button class="btn btn-outline-danger btn-shadow px-3 my-2 ml-0 ml-sm-1 text-left typewriter" onclick="window.location.href='/login';">
-                            <h4>Register</h4>
-                    </button>
+                    <input type="submit" class="btn btn-outline-danger btn-shadow px-3 my-2 ml-0 ml-sm-1 text-left typewriter" name="Register" placeholder="Register">
+                             </form>
                     <small id="registerHelp" class="mt-2 form-text text-muted">Already Registered? <a href="/login">Login here</a></small>
                 </div>
             </div>

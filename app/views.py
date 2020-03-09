@@ -57,7 +57,7 @@ def register(request):
 		try:
 			if query_set is None:
 				raise TypeError
-				
+
 			team.clean_fields()
 			team.save()
 		except Exception as e:
