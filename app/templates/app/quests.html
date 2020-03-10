@@ -1,220 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    {% load static %}
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Lakshya CTF</title>
-
-
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'app/css/bootstrap4-neon-glow.min.css' %}">
-    <link rel="stylesheet" href="{% static 'app/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'app/css/flipclock.css' %}">
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/font-hack/2.020/css/hack.min.css'>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-
-</head>
-
-<body>
-    <div class="navbar-dark text-white">
-        <div class="container">
-            <nav class="navbar px-0 py-0 navbar-expand-lg navbar-dark">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <a href="/" class="pl-md-0 p-3 text-decoration-none text-light">
-                            <h3 class="bold"><span class="color_danger">LAKSHYA</span><span class="color_white">CTF</span></h3>
-                        </a>
-                    </div>
-                    <div class="navbar-nav ml-auto">
-                        <a href="/" class="p-3 text-decoration-none text-light bold">Home</a>
-                        <a href="/about" class="p-3 text-decoration-none text-light bold">About</a>
-                        <a href="/leaderboard" class="p-3 text-decoration-none text-light bold">Hackerboard</a>
-                        <a href="/quests" class="p-3 text-decoration-none text-white bold">Challenges</a>
-                        <a href="#" class="p-3 text-decoration-none text-light bold">Logout</a>
-                    </div>
-                </div>
-            </nav>
-
-        </div>
-    </div>
-
-    <div class="jumbotron bg-transparent mb-0 pt-0 radius-0">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12  text-center">
-                    <h1 class="display-1 bold color_white content__title">QUESTS<span class="vim-caret">&nbsp;</span></h1>
-                    <p class="text-grey text-spacey hackerFont lead mb-5">
-                        Its time to show the world what you can do!
-                    </p>
-                </div>
-            </div>
-            {% for message in messages %}
-
-                <div class="alert alert-dismissible fade show alert-success" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">×</span>
+    <head>
+        {% load static %}
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Lakshya CTF</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'app/css/bootstrap4-neon-glow.min.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/main.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/flipclock.css' %}">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/font-hack/2.020/css/hack.min.css'>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    </head>
+    <body>
+        <div class="navbar-dark text-white">
+            <div class="container">
+                <nav class="navbar px-0 py-0 navbar-expand-lg navbar-dark">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                     </button>
-                    <strong>{{ message }}</strong>
-                </div>
-                
-              {% endfor %}
-            <div class="row hackerFont">  
-                {% for challenge in challenges.values %}               
-                <div class="col-md-6 mb-3">
-                    <div class="card category_misc">
-                        <div class="card-header" data-target="#problem_id_{{ challenge.questionId }}" data-toggle="collapse" aria-expanded="false" aria-controls="problem_id_{{ challenge.questionId }}">
-                            {{ challenge.questionTitle }}<span class="badge align-self-end">{{ challenge.questionPoints }} points</span>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <a href="/" class="pl-md-0 p-3 text-decoration-none text-light">
+                                <h3 class="bold"><span class="color_danger">LAKSHYA</span><span class="color_white">CTF</span></h3>
+                            </a>
                         </div>
-                        <div id="problem_id_{{ challenge.questionId }}" class="collapse card-body">
-                            <blockquote class="card-blockquote">
-                                <div style="display: flex;">
-                                    <h6 class="solvers">Solvers: {{ challenge.questionSolvers }} &nbsp;<span class="color_danger">Difficulty:</span></h6>
-                                    <div class="pl-2"><canvas style="width:80px;height:15px" id="problem_id_{{ challenge.questionId }}_chart"></canvas></div>
-                                </div>
-                                <p> 
-                                    {{ challenge.questionDescription|safe }}
-                                </p>
-                                {% if challenge.questionData|safe %}
-
-                              <a href="/Uploads/{{ challenge.questionData }}" class="btn btn-outline-secondary btn-shadow" download><span class="fa fa-download mr-2"></span>Download</a>
-                              {% endif %}
-                                <a href="#hint" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow"><span class="far fa-lightbulb mr-2"></span>Hint</a>
-                                <div class="input-group mt-3">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio1_p4" name="customRadio_p4" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio1_p4" aria-required="">Very Easy</label>
-                                    </div>
-                                    <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio2_p4" name="customRadio_p4" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio2_p4">Easy</label>
-                                    </div>
-                                    <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio3_p4" name="customRadio_p4" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio3_p4">Medium</label>
-                                    </div>
-                                    <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio4_p4" name="customRadio_p4" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio4_p4">Hard</label>
-                                    </div>
-                                    <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio5_p4" name="customRadio_p4" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio5_p4">Very Hard</label>
-                                    </div>
-                                </div>
-                                <div class="input-group mt-3">
-                                    <input type="text" class="form-control" placeholder="Enter Flag" aria-label="Enter Flag" aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button id="submit_p4" class="btn btn-outline-secondary" type="button">Go!</button>
-                                    </div>
-                                </div>
-                            </blockquote>
+                        <div class="navbar-nav ml-auto">
+                            <a href="/" class="p-3 text-decoration-none text-light bold">Home</a>
+                            <a href="/about" class="p-3 text-decoration-none text-light bold">About</a>
+                            <a href="/leaderboard" class="p-3 text-decoration-none text-light bold">Hackerboard</a>
+                            <a href="/quests" class="p-3 text-decoration-none text-white bold">Challenges</a>
+                            <a href="#" class="p-3 text-decoration-none text-light bold">Logout</a>
                         </div>
                     </div>
+                </nav>
+            </div>
+        </div>
+        <div class="jumbotron bg-transparent mb-0 pt-0 radius-0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12  text-center">
+                        <h1 class="display-1 bold color_white content__title">QUESTS<span class="vim-caret">&nbsp;</span></h1>
+                        <p class="text-grey text-spacey hackerFont lead mb-5">
+                            Its time to show the world what you can do!
+                        </p>
+                    </div>
                 </div>
+                {% for message in messages %}
+                    <div class="alert alert-dismissible fade show alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                        </button>
+                        <strong>{{ message }}</strong>
+                    </div>
+                    
                 {% endfor %}
-            </div>
-            <div class="row mt-5 pt-5 hackerFont">
-                <div class="col-md-12">
-                    Chart Difficulties:
-                    <span style="color:#17b06b">Very Easy,</span>
-                    <span style="color:#17b06b">Easy,</span>
-                    <span style="color:#ffce56">Medium,</span>
-                    <span style="color:#ef121b">Hard,</span>
-                    <span style="color:#ef121b">Very Hard,</span>
-                    <br><br>Challenge Types:
-                    <span class="p-1" style="background-color:#ef121b94">Web</span>
-                    <span class="p-1" style="background-color:#17b06b94">Reversing</span>
-                    <span class="p-1" style="background-color:#f9751594">Steganography</span>
-                    <span class="p-1" style="background-color:#36a2eb94">Pwning</span>
-                    <span class="p-1" style="background-color:#9966FF94">Cryptography</span>
-                    <span class="p-1" style="background-color:#ffce5694">Other</span>
+                <div class="row hackerFont">
+                    {% for challenge in challenges.values %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card category_misc">
+                                <div class="card-header" data-target="#problem_id_{{ challenge.questionId }}" data-toggle="collapse" aria-expanded="false" aria-controls="problem_id_{{ challenge.questionId }}">
+                                    {{ challenge.questionTitle }}<span class="badge align-self-end">{{ challenge.questionPoints }} points</span>
+                                </div>
+                                <div id="problem_id_{{ challenge.questionId }}" class="collapse card-body">
+                                    <blockquote class="card-blockquote">
+                                        <div style="display: flex;">
+                                            <h6 class="solvers">Solvers: {{ challenge.questionSolvers }} &nbsp;<span class="color_danger">Difficulty:</span></h6>
+                                            <div class="pl-2"><canvas style="width:80px;height:15px" id="problem_id_{{ challenge.questionId }}_chart"></canvas></div>
+                                        </div>
+                                        <p>
+                                            {{ challenge.questionDescription|safe }}
+                                        </p>
+                                        {% if challenge.questionData|safe %}
+                                            <a href="/Uploads/{{ challenge.questionData }}" class="btn btn-outline-secondary btn-shadow" download><span class="fa fa-download mr-2"></span>Download</a>
+                                        {% endif %}
+                                        <a href="#hint" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow"><span class="far fa-lightbulb mr-2"></span>Hint</a>
+                                        <div class="input-group mt-3">
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="customRadio1_p4" name="customRadio_p4" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio1_p4" aria-required="">Very Easy</label>
+                                            </div>
+                                            <div class="ht-tm-element custom-control custom-radio">
+                                                <input type="radio" id="customRadio2_p4" name="customRadio_p4" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio2_p4">Easy</label>
+                                            </div>
+                                            <div class="ht-tm-element custom-control custom-radio">
+                                                <input type="radio" id="customRadio3_p4" name="customRadio_p4" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio3_p4">Medium</label>
+                                            </div>
+                                            <div class="ht-tm-element custom-control custom-radio">
+                                                <input type="radio" id="customRadio4_p4" name="customRadio_p4" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio4_p4">Hard</label>
+                                            </div>
+                                            <div class="ht-tm-element custom-control custom-radio">
+                                                <input type="radio" id="customRadio5_p4" name="customRadio_p4" class="custom-control-input">
+                                                <label class="custom-control-label" for="customRadio5_p4">Very Hard</label>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mt-3">
+                                            <input type="text" class="form-control" placeholder="Enter Flag" aria-label="Enter Flag" aria-describedby="basic-addon2">
+                                            <div class="input-group-append">
+                                                <button id="submit_p4" class="btn btn-outline-secondary" type="button">Go!</button>
+                                            </div>
+                                        </div>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            </div>
-        </div>
-        <div class="modal fade" id="hint" tabindex="-1" role="dialog" aria-labelledby="hint label" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        HINT GOES HERE
+                <div class="row mt-5 pt-5 hackerFont">
+                    <div class="col-md-12">
+                        Chart Difficulties:
+                        <span style="color:#17b06b">Very Easy,</span>
+                        <span style="color:#17b06b">Easy,</span>
+                        <span style="color:#ffce56">Medium,</span>
+                        <span style="color:#ef121b">Hard,</span>
+                        <span style="color:#ef121b">Very Hard,</span>
+                        <br><br>Challenge Types:
+                        <span class="p-1" style="background-color:#ef121b94">Web</span>
+                        <span class="p-1" style="background-color:#17b06b94">Reversing</span>
+                        <span class="p-1" style="background-color:#f9751594">Steganography</span>
+                        <span class="p-1" style="background-color:#36a2eb94">Pwning</span>
+                        <span class="p-1" style="background-color:#9966FF94">Cryptography</span>
+                        <span class="p-1" style="background-color:#ffce5694">Other</span>
                     </div>
                 </div>
             </div>
-        </div>
-        <script>
+            <div class="modal fade" id="hint" tabindex="-1" role="dialog" aria-labelledby="hint label" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            HINT GOES HERE
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
             var dataset = [
-        
-                [71, 12, 13, 17, 25, 0],
-                [31, 5, 23, 24, 10, 0],
-                [11, 2, 13, 41, 15, 0],
+            
+            [71, 12, 13, 17, 25, 0],
+            [31, 5, 23, 24, 10, 0],
+            [11, 2, 13, 41, 15, 0],
             ]
-
             function getBarChartData(i) {
-                return barChartData = {
-                    labels: ['Easy', 'Medium', 'Hard'],
-                    datasets: [{
-                        label: 'Dataset 1',
-                        backgroundColor: [
-                            '#17b06b', '#ffce56', '#ef121b' 
-                        ],
-                        borderColor: [
-                            '#17b06b', '#ffce56', '#ef121b'
-                        ],
-                        borderWidth: 1,
-                        data: dataset[i - 1]
-                    }]
-
-                };
-            }
-
-            window.onload = function() {
-                var numcharts = {{ num_challenges }};
-                for (let i = 1; i <= numcharts; i++) {
-                    var ctx = document.getElementById('problem_id_' + i + '_chart').getContext('2d');
-                    window.myBar = new Chart(ctx, {
-                        type: 'bar',
-                        data: getBarChartData(i),
-                        options: {
-                            tooltips: {
-                                enabled: false,
-                            },
-                            responsive: false,
-                            legend: {
-                                display: false,
-                            },
-                            scales: {
-                                yAxes: [{
-                                    display: false
-                                }],
-                                xAxes: [{
-                                    display: false
-                                }]
-                            }
-                        }
-                    });
-                    myBar.canvas.parentNode.style.width = '80px';
-                    myBar.canvas.parentNode.style.height = '15px';
-                }
+            return barChartData = {
+            labels: ['Easy', 'Medium', 'Hard'],
+            datasets: [{
+            label: 'Dataset 1',
+            backgroundColor: [
+            '#17b06b', '#ffce56', '#ef121b'
+            ],
+            borderColor: [
+            '#17b06b', '#ffce56', '#ef121b'
+            ],
+            borderWidth: 1,
+            data: dataset[i - 1]
+            }]
             };
-        </script>
-
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-        <script src="{% static 'app/js/flipclock.js' %}"></script>
-        <script src="{% static 'app/js/questionLogic.js' %}"></script>
-
-</body>
-
-</html>
+            }
+            window.onload = function() {
+            var numcharts = {{ num_challenges }};
+            for (let i = 1; i <= numcharts; i++) {
+            var ctx = document.getElementById('problem_id_' + i + '_chart').getContext('2d');
+            window.myBar = new Chart(ctx, {
+            type: 'bar',
+            data: getBarChartData(i),
+            options: {
+            tooltips: {
+            enabled: false,
+            },
+            responsive: false,
+            legend: {
+            display: false,
+            },
+            scales: {
+            yAxes: [{
+            display: false
+            }],
+            xAxes: [{
+            display: false
+            }]
+            }
+            }
+            });
+            myBar.canvas.parentNode.style.width = '80px';
+            myBar.canvas.parentNode.style.height = '15px';
+            }
+            };
+            </script>
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+            <script src="{% static 'app/js/flipclock.js' %}"></script>
+            <script src="{% static 'app/js/questionLogic.js' %}"></script>
+        </body>
+    </html>
