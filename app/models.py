@@ -36,6 +36,7 @@ class Questions(models.Model):
 
 	questionId = models.AutoField(primary_key = True)
 	questionDescription = models.TextField()
+	questionTitle = models.CharField(max_length=40,default='Lakshya')
 	questionPoints = models.IntegerField(default=0)
 	questionData = models.FileField(blank=True)
 	questionFlag = models.CharField(max_length=50,default='lakshya_CTF{hack_me_now}')
@@ -93,6 +94,13 @@ class Events(models.Model):
     email6 = models.CharField(max_length=100)
     phone6 = models.BigIntegerField()
 
+
+    def __str__(self):
+    	return self.receiptid
+
     class Meta:
         managed = False
         db_table = 'events'
+        verbose_name = 'Event'
+        verbose_name_plural = 'Events'
+

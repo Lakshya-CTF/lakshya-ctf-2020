@@ -95,6 +95,7 @@ def quest(request):
 		request.session['timer'] = time.time()
 		request.session['solved'] = [0 for i in range(challenges)]
 		request.session['hints'] = [0 for i in range(challenges)]
+		
 	questions = Questions.objects.all()
 	if request.method == 'POST':
 		flag = request.POST.get('flag')
