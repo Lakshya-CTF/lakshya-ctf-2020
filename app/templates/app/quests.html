@@ -32,7 +32,7 @@
                             <a href="/about" class="p-3 text-decoration-none text-light bold">About</a>
                             <a href="/leaderboard" class="p-3 text-decoration-none text-light bold">Hackerboard</a>
                             <a href="/quests" class="p-3 text-decoration-none text-white bold">Challenges</a>
-                            <a href="#" class="p-3 text-decoration-none text-light bold">Logout</a>
+                            <a href="/logout" class="p-3 text-decoration-none text-light bold">Logout</a>
                         </div>
                     </div>
                 </nav>
@@ -48,6 +48,7 @@
                         </p>
                     </div>
                 </div>
+                <div class="countdown-timer" style="float:right"></div>
                 {% for message in messages %}
                     <div class="alert alert-dismissible fade show alert-success" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -61,142 +62,140 @@
                     {% for challenge in challenges.values %}
                         <div class="col-md-6 mb-3">
                             <div class="card category_misc">
-                                <div class="card-header" data-target="#problem_id_{{ challenge.questionId }}" data-toggle="collapse" aria-expanded="false" aria-controls="problem_id_{{ challenge.questionId }}">
-                                    {{ challenge.questionTitle }}<span class="badge align-self-end">{{ challenge.questionPoints }} points</span>
-                                </div>
-                                <div id="problem_id_{{ challenge.questionId }}" class="collapse card-body">
-                                    <blockquote class="card-blockquote">
-                                        <div style="display: flex;">
-                                            <h6 class="solvers">Solvers: {{ challenge.questionSolvers }} &nbsp;<span class="color_danger">Difficulty:</span></h6>
-                                            <div class="pl-2"><canvas style="width:80px;height:15px" id="problem_id_{{ challenge.questionId }}_chart"></canvas></div>
-                                        </div>
-                                        <p>
-                                            {{ challenge.questionDescription|safe }}
-                                        </p>
-                                        {% if challenge.questionData|safe %}
-                                            <a href="/Uploads/{{ challenge.questionData }}" class="btn btn-outline-secondary btn-shadow" download><span class="fa fa-download mr-2"></span>Download</a>
-                                        {% endif %}
-                                        <a href="#hint" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow"><span class="far fa-lightbulb mr-2"></span>Hint</a>
-                                        <div class="input-group mt-3">
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="customRadio1_p4" name="customRadio_p4" class="custom-control-input">
-                                                <label class="custom-control-label" for="customRadio1_p4" aria-required="">Very Easy</label>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="card-header" data-target="#problem_id_{{ challenge.questionId }}" data-toggle="collapse" aria-expanded="false" aria-controls="problem_id_{{ challenge.questionId }}">
+                                        {{ challenge.questionTitle }}<span class="badge align-self-end">{{ challenge.questionPoints }} points</span>
+                                    </div>
+                                    <div id="problem_id_{{ challenge.questionId }}" class="collapse card-body">
+                                        <blockquote class="card-blockquote">
+                                            <div style="display: flex;">
+                                                <h6 class="solvers">Solvers: {{ challenge.questionSolvers }} &nbsp;<span class="color_danger">Difficulty:</span></h6>
+                                                <div class="pl-2"><canvas style="width:80px;height:15px" id="problem_id_{{ challenge.questionId }}_chart"></canvas></div>
                                             </div>
-                                            <div class="ht-tm-element custom-control custom-radio">
-                                                <input type="radio" id="customRadio2_p4" name="customRadio_p4" class="custom-control-input">
-                                                <label class="custom-control-label" for="customRadio2_p4">Easy</label>
+                                            <p>
+                                                {{ challenge.questionDescription|safe }}
+                                            </p>
+                                            {% if challenge.questionData|safe %}
+                                                <a href="/Uploads/{{ challenge.questionData }}" class="btn btn-outline-secondary btn-shadow" download><span class="fa fa-download mr-2"></span>Download</a>
+                                            {% endif %}
+                                            <a href="#hint" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow"><span class="far fa-lightbulb mr-2"></span>Hint</a>
+                                            <div class="input-group mt-3">
+                                                
+                                                <div class="ht-tm-element custom-control custom-radio">
+                                                    <input type="radio" id="customRadio2_p4" name="customRadio_p4" class="custom-control-input">
+                                                    <label class="custom-control-label" for="customRadio2_p4">Easy</label>
+                                                </div>
+                                                <div class="ht-tm-element custom-control custom-radio">
+                                                    <input type="radio" id="customRadio3_p4" name="customRadio_p4" class="custom-control-input">
+                                                    <label class="custom-control-label" for="customRadio3_p4">Medium</label>
+                                                </div>
+                                                <div class="ht-tm-element custom-control custom-radio">
+                                                    <input type="radio" id="customRadio4_p4" name="customRadio_p4" class="custom-control-input">
+                                                    <label class="custom-control-label" for="customRadio4_p4">Hard</label>
+                                                </div>
+                                                
                                             </div>
-                                            <div class="ht-tm-element custom-control custom-radio">
-                                                <input type="radio" id="customRadio3_p4" name="customRadio_p4" class="custom-control-input">
-                                                <label class="custom-control-label" for="customRadio3_p4">Medium</label>
+                                            <input type="hidden" name="qid" id="qid" value="{{ challenge.questionId }}">
+                                            <div class="input-group mt-3">
+                                                <input type="text" name="flag" class="form-control" placeholder="Enter Flag" aria-label="Enter Flag" aria-describedby="basic-addon2">
+                                                <div class="input-group-append">
+                                                    <button id="submit_p4" class="btn btn-outline-secondary" type="button">Go!</button>
+                                                </div>
                                             </div>
-                                            <div class="ht-tm-element custom-control custom-radio">
-                                                <input type="radio" id="customRadio4_p4" name="customRadio_p4" class="custom-control-input">
-                                                <label class="custom-control-label" for="customRadio4_p4">Hard</label>
-                                            </div>
-                                            <div class="ht-tm-element custom-control custom-radio">
-                                                <input type="radio" id="customRadio5_p4" name="customRadio_p4" class="custom-control-input">
-                                                <label class="custom-control-label" for="customRadio5_p4">Very Hard</label>
-                                            </div>
-                                        </div>
-                                        <div class="input-group mt-3">
-                                            <input type="text" class="form-control" placeholder="Enter Flag" aria-label="Enter Flag" aria-describedby="basic-addon2">
-                                            <div class="input-group-append">
-                                                <button id="submit_p4" class="btn btn-outline-secondary" type="button">Go!</button>
-                                            </div>
-                                        </div>
-                                    </blockquote>
+                                        </blockquote>
+                                    </div>
+                                </form>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="row mt-5 pt-5 hackerFont">
-                    <div class="col-md-12">
-                        Chart Difficulties:
-                        <span style="color:#17b06b">Very Easy,</span>
-                        <span style="color:#17b06b">Easy,</span>
-                        <span style="color:#ffce56">Medium,</span>
-                        <span style="color:#ef121b">Hard,</span>
-                        <span style="color:#ef121b">Very Hard,</span>
-                        <br><br>Challenge Types:
-                        <span class="p-1" style="background-color:#ef121b94">Web</span>
-                        <span class="p-1" style="background-color:#17b06b94">Reversing</span>
-                        <span class="p-1" style="background-color:#f9751594">Steganography</span>
-                        <span class="p-1" style="background-color:#36a2eb94">Pwning</span>
-                        <span class="p-1" style="background-color:#9966FF94">Cryptography</span>
-                        <span class="p-1" style="background-color:#ffce5694">Other</span>
+                        {% endfor %}
                     </div>
-                </div>
-            </div>
-            <div class="modal fade" id="hint" tabindex="-1" role="dialog" aria-labelledby="hint label" style="display: none;" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            HINT GOES HERE
+                    <div class="row mt-5 pt-5 hackerFont">
+                        <div class="col-md-12">
+                            Chart Difficulties:
+                            <span style="color:#17b06b">Very Easy,</span>
+                            <span style="color:#17b06b">Easy,</span>
+                            <span style="color:#ffce56">Medium,</span>
+                            <span style="color:#ef121b">Hard,</span>
+                            <span style="color:#ef121b">Very Hard,</span>
+                            <br><br>Challenge Types:
+                            <span class="p-1" style="background-color:#ef121b94">Web</span>
+                            <span class="p-1" style="background-color:#17b06b94">Reversing</span>
+                            <span class="p-1" style="background-color:#f9751594">Steganography</span>
+                            <span class="p-1" style="background-color:#36a2eb94">Pwning</span>
+                            <span class="p-1" style="background-color:#9966FF94">Cryptography</span>
+                            <span class="p-1" style="background-color:#ffce5694">Other</span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <script>
-            var dataset = [
-            
-            [71, 12, 13, 17, 25, 0],
-            [31, 5, 23, 24, 10, 0],
-            [11, 2, 13, 41, 15, 0],
-            ]
-            function getBarChartData(i) {
-            return barChartData = {
-            labels: ['Easy', 'Medium', 'Hard'],
-            datasets: [{
-            label: 'Dataset 1',
-            backgroundColor: [
-            '#17b06b', '#ffce56', '#ef121b'
-            ],
-            borderColor: [
-            '#17b06b', '#ffce56', '#ef121b'
-            ],
-            borderWidth: 1,
-            data: dataset[i - 1]
-            }]
-            };
-            }
-            window.onload = function() {
-            var numcharts = {{ num_challenges }};
-            for (let i = 1; i <= numcharts; i++) {
-            var ctx = document.getElementById('problem_id_' + i + '_chart').getContext('2d');
-            window.myBar = new Chart(ctx, {
-            type: 'bar',
-            data: getBarChartData(i),
-            options: {
-            tooltips: {
-            enabled: false,
-            },
-            responsive: false,
-            legend: {
-            display: false,
-            },
-            scales: {
-            yAxes: [{
-            display: false
-            }],
-            xAxes: [{
-            display: false
-            }]
-            }
-            }
-            });
-            myBar.canvas.parentNode.style.width = '80px';
-            myBar.canvas.parentNode.style.height = '15px';
-            }
-            };
-            </script>
-            <!-- Optional JavaScript -->
-            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-            <script src="{% static 'app/js/flipclock.js' %}"></script>
-            <script src="{% static 'app/js/questionLogic.js' %}"></script>
-        </body>
-    </html>
+                <div class="modal fade" id="hint" tabindex="-1" role="dialog" aria-labelledby="hint label" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                {{ hint }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                var dataset = [
+                
+                [71, 12, 13, 17, 25, 0],
+                [31, 5, 23, 24, 10, 0],
+                [11, 2, 13, 41, 15, 0],
+                ]
+                function getBarChartData(i) {
+                return barChartData = {
+                labels: ['Easy', 'Medium', 'Hard'],
+                datasets: [{
+                label: 'Dataset 1',
+                backgroundColor: [
+                '#17b06b', '#ffce56', '#ef121b'
+                ],
+                borderColor: [
+                '#17b06b', '#ffce56', '#ef121b'
+                ],
+                borderWidth: 1,
+                data: dataset[i - 1]
+                }]
+                };
+                }
+                window.onload = function() {
+                var numcharts = {{ num_challenges }};
+                for (let i = 1; i <= numcharts; i++) {
+                var ctx = document.getElementById('problem_id_' + i + '_chart').getContext('2d');
+                window.myBar = new Chart(ctx, {
+                type: 'bar',
+                data: getBarChartData(i),
+                options: {
+                tooltips: {
+                enabled: false,
+                },
+                responsive: false,
+                legend: {
+                display: false,
+                },
+                scales: {
+                yAxes: [{
+                display: false
+                }],
+                xAxes: [{
+                display: false
+                }]
+                }
+                }
+                });
+                myBar.canvas.parentNode.style.width = '80px';
+                myBar.canvas.parentNode.style.height = '15px';
+                }
+                };
+                </script>
+                <!-- Optional JavaScript -->
+                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+                <script src="{% static 'app/js/flipclock.js' %}"></script>
+                <script src="{% static 'app/js/questionLogic.js' %}"></script>
+            </body>
+        </html>

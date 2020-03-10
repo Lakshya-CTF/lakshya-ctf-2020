@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib import admin
 from import_export.admin import ImportExportActionModelAdmin
+from django.utils import timezone
 
 # Create your models here. Use set_password
 EASY = "EA"
@@ -59,6 +60,13 @@ class Questions(models.Model):
 class QuestionsAdmin(ImportExportActionModelAdmin):
 
     pass
+
+
+class SolvedTimestamps(models.Model):
+
+    username = models.ForeignKey(Team, on_delete=models.CASCADE)
+    timestamp_record = models.DateTimeField(default=timezone.now)
+    points = models.IntegerField(default=0)
 
 
 class Events(models.Model):

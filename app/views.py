@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from .models import Questions, Team, Events
+from .models import Questions, Team, Events, SolvedTimestamps
 
 import time
 
@@ -33,7 +33,7 @@ def teamlogin(request):
         if team is not None:
             if team.played == False:
                 login(request, team)
-                return redirect("/quest")
+                return redirect("/quests")
             else:
                 messages.error(request, "Already played!")
         else:
@@ -110,6 +110,7 @@ def quest(request):
                     "timer")
                 request.session["solved"][flag_id] = 1
                 question.questionSolvers += 1
+                SolvedTimestamps(username=request.user,points=request.user.points).save() 
                 question.save()
                 request.user.save()
                 request.session.save()
@@ -127,7 +128,6 @@ def quest(request):
     )
 
 
-@login_required(login_url="/login/")
 @gzip_page
 def leaderboard(request):
     teams = (Team.objects.all().exclude(timeRequired=0.0).order_by(
