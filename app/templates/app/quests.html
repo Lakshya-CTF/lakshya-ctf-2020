@@ -70,14 +70,14 @@
                 {% for challenge in challenges.values %}               
                 <div class="col-md-6 mb-3">
                     <div class="card category_misc">
-                        <div class="card-header" data-target="#problem_id_4" data-toggle="collapse" aria-expanded="false" aria-controls="problem_id_4">
+                        <div class="card-header" data-target="#problem_id_{{ challenge.questionId }}" data-toggle="collapse" aria-expanded="false" aria-controls="problem_id_{{ challenge.questionId }}">
                             {{ challenge.questionTitle }}<span class="badge align-self-end">{{ challenge.questionPoints }} points</span>
                         </div>
-                        <div id="problem_id_4" class="collapse card-body">
+                        <div id="problem_id_{{ challenge.questionId }}" class="collapse card-body">
                             <blockquote class="card-blockquote">
                                 <div style="display: flex;">
                                     <h6 class="solvers">Solvers: {{ challenge.questionSolvers }} &nbsp;<span class="color_danger">Difficulty:</span></h6>
-                                    <div class="pl-2"><canvas style="width:80px;height:15px" id="problem_id_4_chart"></canvas></div>
+                                    <div class="pl-2"><canvas style="width:80px;height:15px" id="problem_id_{{ challenge.questionId }}_chart"></canvas></div>
                                 </div>
                                 <p> 
                                     {{ challenge.questionDescription|safe }}
@@ -175,7 +175,7 @@
             }
 
             window.onload = function() {
-                var numcharts = 6;
+                var numcharts = {{ num_challenges }};
                 for (let i = 1; i <= numcharts; i++) {
                     var ctx = document.getElementById('problem_id_' + i + '_chart').getContext('2d');
                     window.myBar = new Chart(ctx, {

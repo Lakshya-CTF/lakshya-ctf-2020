@@ -95,7 +95,7 @@ def quest(request):
 		request.session['timer'] = time.time()
 		request.session['solved'] = [0 for i in range(challenges)]
 		request.session['hints'] = [0 for i in range(challenges)]
-		
+
 	questions = Questions.objects.all()
 	if request.method == 'POST':
 		flag = request.POST.get('flag')
@@ -115,7 +115,7 @@ def quest(request):
 				messages.error(request,'Already solved!')
 		else: 
 			messages.error(request,'Invalid flag!')
-	return render(request,'app/quests.html',context = {'challenges':questions})
+	return render(request,'app/quests.html',context = {'challenges':questions,'num_challenges':len(questions)})
 
 @login_required(login_url='/login/')
 @gzip_page
