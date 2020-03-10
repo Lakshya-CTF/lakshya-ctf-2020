@@ -22,23 +22,21 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from django.views.generic import TemplateView
 
-handler404 = 'app.views.handler404'
+handler404 = "app.views.handler404"
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^$',views.index),
-    url(r'^login/',views.teamlogin),
-    url(r'^register/',views.register),
-    url(r'^quest/',views.quest),
-    url(r'^logout/',views.teamlogout),
-    url(r'^leaderboard/',views.leaderboard),
-    url(r'^timer/',views.timer),
-    url(r'^hint/',views.hint),
-    url(r'^uservalidator/',views.validate_username),
-    url(r'^instructions/',views.instructions),
-    url(r'^about/',views.about),
-
+    url(r"^admin/", admin.site.urls),
+    url(r"^$", views.index),
+    url(r"^login/", views.teamlogin),
+    url(r"^register/", views.register),
+    url(r"^quest/", views.quest),
+    url(r"^logout/", views.teamlogout),
+    url(r"^leaderboard/", views.leaderboard),
+    url(r"^timer/", views.timer),
+    url(r"^hint/", views.hint),
+    url(r"^uservalidator/", views.validate_username),
+    url(r"^instructions/", views.instructions),
+    url(r"^about/", views.about),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
 urlpatterns += staticfiles_urlpatterns()
