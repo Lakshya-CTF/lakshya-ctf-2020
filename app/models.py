@@ -91,6 +91,9 @@ class SolvedTimestamps(models.Model):
     timestamp_record = models.DateTimeField(default=timezone.now)
     points = models.IntegerField(default=0)
 
+    def convert(self):
+        return f"{self.timestamp_record.year}-{self.timestamp_record.month}-{self.timestamp_record.day} {self.timestamp_record.hour}:{self.timestamp_record.minute}:{self.timestamp_record.second}"
+
 
 class Events(models.Model):
 

@@ -15,6 +15,11 @@
         <link rel='stylesheet' href="{% static 'app/css/hack.min.css' %}">
         
         <link rel="stylesheet" href="{% static 'app/css/main.css' %}">
+
+        <script src="{% static 'app/js/jquery-3.4.1.min.js' %}" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="></script>
+        <script src="{% static 'app/js/popper.min.js' %}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"></script>
+        <script src="{% static 'app/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"></script>
+        <script src="{% static 'app/js/preloader.js' %}"></script>
     </head>
     <body class="imgloaded">
         <div class="glitch">
@@ -68,18 +73,21 @@
                             <div class="row  hackerFont">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="receiptid" id="receiptid" placeholder="RecieptId(ex. EINC-5e5a93e4318db)">
+                                        <input type="text" class="form-control" name="receiptid" id="receiptid" placeholder="RecieptId(ex. EINC-5e5a93e4318db)" required>
                                         <small id="reciept_id_help" class="form-text text-muted">Don't have reciept id? Register <a target="_blank" href="http://pictinc.org/subevents_register/online/index1.php">here</a></small>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="teamname" id="teamname" placeholder="Team name">
+                                        <input type="text" class="form-control" name="teamname" id="teamname" placeholder="Username" required>
+                                        <div class="invalid-feedback">
+                                            A team with this username already exists.
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" id="passwd" name="passwd" placeholder="New Password">
+                                        <input type="password" class="form-control" id="passwd" name="passwd" placeholder="New Password" required>
                                         <small id="passHelp" class="form-text text-muted">Make sure nobody's behind you</small>
                                     </div>
                                     <div class="custom-control custom-checkbox my-4">
-                                        <input type="checkbox" class="custom-control-input" id="solemnly-swear">
+                                        <input type="checkbox" class="custom-control-input" id="solemnly-swear" required>
                                         <label class="custom-control-label" for="solemnly-swear">I solemnly swear that I am up to no good.</label>
                                     </div>
                                 </div>
@@ -96,11 +104,47 @@
                 </div>
             </div>
         </div>
+        <script>
+             $("#teamname").keyup(function () {
+                var username = $(this).val();
+
+          $.ajax({
+            url: '/uservalidator/',
+            data: {
+              'teamname': username
+            },
+            dataType: 'json',
+            success: function (data) {
+              if (data.is_taken) {
+                $("#teamname").removeClass("is-valid").addClass('is-invalid');
+              }
+              else{
+                $("#teamname").removeClass("is-invalid").addClass('is-valid'); 
+              }
+            }
+          });
+
+        });
+             (function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+        </script>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="{% static 'app/js/jquery-3.4.1.min.js' %}" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="></script>
-        <script src="{% static 'app/js/popper.min.js' %}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"></script>
-        <script src="{% static 'app/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"></script>
-        <script src="{% static 'app/js/preloader.js' %}"></script>
+        
     </body>
 </html>

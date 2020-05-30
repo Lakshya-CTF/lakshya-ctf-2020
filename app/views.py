@@ -87,9 +87,9 @@ def about(request):
     return render(request, "app/about.html")
 
 @gzip_page
-def machine(request,id):
-    if id:
-        machine = Machines.objects.get(id = id)
+def machine(request,id = 1):
+    
+    machine = Machines.objects.get(id = id)
     return render(request,"app/machine.html", {'machine': machine })
 
 def teamlogout(request):
@@ -149,8 +149,14 @@ def leaderboard(request):
     for rank, team in zip(range(1, len(teams) + 1), teams):
         leaderboard.append((rank, team))
 
+
+    usernames = list()
+    for team in teams:
+        data = SolvedTimestamps.objects.filter(username = team)
+        usernames.append({'name': team.username,'data': data})
+
     return render(request, "app/leaderboard.html",
-                  {"leaderboard": leaderboard})
+                  {"leaderboard": leaderboard,"usernames":usernames})
 
 
 @login_required(login_url="/login/")

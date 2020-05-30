@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Team, Questions, TeamAdmin, Machines
+from .models import Team, Questions, TeamAdmin, Machines, SolvedTimestamps
 from django.contrib.sessions.models import Session
 
 admin.site.site_header = "Lakshya CTF Admin Portal"
@@ -10,3 +10,4 @@ admin.site.index_title = "Adminsitration"
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Questions)
 admin.site.register(Machines)
+admin.site.register(SolvedTimestamps)
