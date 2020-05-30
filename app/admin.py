@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Team, Questions, TeamAdmin, QuestionsAdmin
+from .models import Team, Questions, TeamAdmin, Machines
 from django.contrib.sessions.models import Session
 
 admin.site.site_header = "Lakshya CTF Admin Portal"
@@ -8,4 +8,5 @@ admin.site.index_title = "Adminsitration"
 
 # Register your models here.
 admin.site.register(Team, TeamAdmin)
-admin.site.register(Questions, QuestionsAdmin)
+admin.site.register(Questions)
+admin.site.register(Machines)

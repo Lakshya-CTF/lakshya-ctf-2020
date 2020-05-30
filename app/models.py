@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib import admin
-from import_export.admin import ImportExportActionModelAdmin
+#from import_export.admin import ImportExportActionModelAdmin
 from django.utils import timezone
 
 # Create your models here. Use set_password
@@ -11,6 +11,7 @@ MEDIUM = "ME"
 HARD = "HA"
 
 CATEGORY_CHOICE = ((EASY, "Easy"), (MEDIUM, "Medium"), (HARD, "Hard"))
+QUESTION_CATEGORY = (("web", "Web"), ("reversing", "Reversing"), ("steg", "Steganography"),("pwning","Pwning"),("crypt","Cryptography"),("misc","Miscellaneous"))
 
 
 class Team(AbstractUser):
@@ -36,18 +37,21 @@ class TeamAdmin(admin.ModelAdmin):
 
 class Questions(models.Model):
 
-    questionId = models.AutoField(primary_key=True)
-    questionDescription = models.TextField()
-    questionTitle = models.CharField(max_length=40, default="Lakshya")
-    questionPoints = models.IntegerField(default=0)
-    questionData = models.FileField(blank=True)
+    questionId = models.AutoField(primary_key=True,verbose_name = "ID")
+    questionDescription = models.TextField(verbose_name = "Description")
+    questionTitle = models.CharField(max_length=40, default="Lakshya",verbose_name = "Title")
+    questionPoints = models.IntegerField(default=0,verbose_name = "Points")
+    questionData = models.FileField(blank=True,verbose_name = "Data")
     questionFlag = models.CharField(max_length=50,
                                     default="lakshya_CTF{hack_me_now}")
-    questionHint = models.TextField(default="Sample Hint")
-    questionSolvers = models.IntegerField(default=0)
-    questionDifficulty = models.CharField(max_length=2,
-                                          choices=CATEGORY_CHOICE,
-                                          default=EASY)
+    questionHint = models.TextField(default="Sample Hint",verbose_name = "Flag")
+    questionSolvers = models.IntegerField(default=0,verbose_name = "Solvers")
+    questionType = models.CharField(max_length = 15,choices = QUESTION_CATEGORY, default = "web",verbose_name = "Category")
+
+    easyRating = models.IntegerField(default = 0,verbose_name = "Easy Raters")
+    mediumRating = models.IntegerField(default = 0,verbose_name = "Medium Raters")
+    hardRating = models.IntegerField(default = 0,verbose_name = "Hard Raters")
+
 
     def __str__(self):
         return self.questionDescription
@@ -57,9 +61,28 @@ class Questions(models.Model):
         verbose_name_plural = "Questions"
 
 
-class QuestionsAdmin(ImportExportActionModelAdmin):
+class Machines(models.Model):
+    
+    machineTitle = models.CharField(max_length=20, verbose_name = "Name")
+    machineIp = models.CharField(max_length=20,verbose_name = "IP Address")
+    machinePoints = models.IntegerField(default=0,verbose_name = "Points")
+    machineSolvers = models.IntegerField(default = 0,verbose_name = "Solvers")
+    enumeration = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True,verbose_name = "Enumeration Rating")
+    ctf_like = models.IntegerField(choices = zip(range(1,6), range(1,6)),blank=True,verbose_name="CTF-Like Rating")
+    custom_exploitation = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True,verbose_name = "Custom Exploitation Rating")
+    real_life = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True,verbose_name = "Real Life Rating")
+    cve = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True, verbose_name = "CVE Rating")
 
-    pass
+    easyRating = models.IntegerField(default = 0,verbose_name = "Easy Raters")
+    mediumRating = models.IntegerField(default = 0,verbose_name = "Medium Raters")
+    hardRating = models.IntegerField(default = 0,verbose_name = "Hard Raters")
+
+    def __str__(self):
+        return self.machineIp
+
+    class Meta:
+        verbose_name = "Machine"
+        verbose_name_plural = "Machines"
 
 
 class SolvedTimestamps(models.Model):

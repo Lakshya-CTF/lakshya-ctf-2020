@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse, render_to_response
+from django.shortcuts import render, redirect, HttpResponse
 from django.views.decorators.gzip import gzip_page
 from django.contrib import messages
 from django.core.exceptions import ValidationError
@@ -8,9 +8,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from .models import Questions, Team, Events, SolvedTimestamps
+from .models import Questions, Team, Events, SolvedTimestamps, Machines
 
 import time
+import CTFFinal.settings as settings 
 
 challenges = 14
 event_time = 2700
@@ -19,7 +20,7 @@ event_time = 2700
 
 
 def handler404(request, exception, template_name="404.html"):
-    response = render_to_response("404.html")
+    response = render(None,"404.html")
     response.status_code = 404
     return response
 
@@ -49,9 +50,14 @@ def register(request):
         receiptid = request.POST.get("receiptid")
         team.username = request.POST.get("teamname")
         team.password = make_password(request.POST.get("passwd"))
+        
+        if settings.MODE == 'production':
+            query_count = (Events.objects.using("receipts").filter(
+            receiptid = receiptid).count())
 
-        query_count = (Events.objects.using("receipts").filter(
-            receiptid=receiptid).count())
+        elif settings.MODE == 'development':
+            query_count = (Events.objects.filter(receiptid = receiptid).count())
+        
         try:
             if query_count == 0:
                 raise TypeError
@@ -80,6 +86,11 @@ def instructions(request):
 def about(request):
     return render(request, "app/about.html")
 
+@gzip_page
+def machine(request,id):
+    if id:
+        machine = Machines.objects.get(id = id)
+    return render(request,"app/machine.html", {'machine': machine })
 
 def teamlogout(request):
     request.user.timeRequired = time.time() - request.session.get("timer")
@@ -98,6 +109,7 @@ def quest(request):
         request.session["hints"] = [0 for i in range(challenges)]
 
     questions = Questions.objects.all()
+    machines = Machines.objects.all()
     if request.method == "POST":
         flag = request.POST.get("flag")
         flag_id = int(request.POST.get("qid"))
@@ -123,7 +135,8 @@ def quest(request):
         "app/quests.html",
         context={
             "challenges": questions,
-            "num_challenges": len(questions)
+            "num_challenges": len(questions),
+            "machines": machines,
         },
     )
 
