@@ -130,6 +130,7 @@ def quest(request):
                 messages.error(request, "Already solved!")
         else:
             messages.error(request, "Invalid flag!")
+            
     return render(
         request,
         "app/quests.html",
