@@ -9,9 +9,11 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from .models import Questions, Team, Events, SolvedTimestamps, Machines
-
 import time
 import CTFFinal.settings as settings 
+
+
+from django.views.decorators.cache import cache_page
 
 challenges = 14
 event_time = 2700
@@ -19,14 +21,19 @@ event_time = 2700
 # Create your views here.
 
 
-def handler404(request, exception, template_name="404.html"):
+def handler404(request, exception, *args, **kwargs):
     response = render(None,"404.html")
     response.status_code = 404
     return response
 
+def handler500(request):
+    response = render(None,"500.html")
+    response.status_code = 500
+    return response
 
 @gzip_page
 def teamlogin(request):
+    ''' TODO: Do not permit multiple sessions '''
     if request.method == "POST":
         username = request.POST.get("teamname")
         password = request.POST.get("password")
@@ -102,6 +109,7 @@ def teamlogout(request):
 
 @gzip_page
 @login_required(login_url="/login/")
+@cache_page(60 * 1)
 def quest(request):
     if "hints" not in request.session and "solved" not in request.session:
         request.session["timer"] = time.time()
@@ -130,7 +138,7 @@ def quest(request):
                 messages.error(request, "Already solved!")
         else:
             messages.error(request, "Invalid flag!")
-            
+
     return render(
         request,
         "app/quests.html",
@@ -143,6 +151,7 @@ def quest(request):
 
 
 @gzip_page
+@cache_page(60 * 5)
 def leaderboard(request):
     teams = (Team.objects.all().exclude(timeRequired=0.0).order_by(
         "-points", "timeRequired")[:10])

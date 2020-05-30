@@ -25,6 +25,8 @@ from django.urls import path
 from django.views.generic import TemplateView
 
 handler404 = "app.views.handler404"
+handler500 = "app.views.handler500"
+
 
 urlpatterns = [
     url(r"^admin/", admin.site.urls),

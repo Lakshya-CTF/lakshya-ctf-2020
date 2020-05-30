@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
 	"django.middleware.security.SecurityMiddleware",
+	#"whitenoise.middleware.WhiteNoiseMiddleware",
 	"django.contrib.sessions.middleware.SessionMiddleware",
 	"django.middleware.common.CommonMiddleware",
 	"django.middleware.csrf.CsrfViewMiddleware",
@@ -101,7 +102,21 @@ elif MODE == 'production':
 		},
 	}
 
+if MODE == 'development':
+	CACHES = {
 
+	    'default': {
+	        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+	    }
+	}
+elif MODE == 'production':
+	CACHES = {
+    	
+    	'default': {
+        	'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        	'LOCATION': '/tmp/memcached.sock',
+    	}
+	}
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
