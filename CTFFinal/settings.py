@@ -21,10 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "0f22298fabf5dff32a7cbc73613f0106dfb67a4d9bb35424"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get("DEBUG") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -87,7 +87,7 @@ if MODE == 'development':
 elif MODE == 'production':
 	DATABASES = {
 		"default": dj_database_url.config(conn_max_age=500),
-		
+
 		"receipts": {
 			"ENGINE": "django.db.backends.mysql",
 			"NAME": os.environ.get("DB_NAME"),
