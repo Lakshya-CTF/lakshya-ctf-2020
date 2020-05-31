@@ -113,7 +113,11 @@ elif MODE == 'production':
     	
     	'default': {
         	'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
-        	'LOCATION': '/tmp/memcached.sock',
+        	'LOCATION': os.environ.get("MEMCACHEDCLOUD_SERVERS"),
+        	'OPTIONS':{
+        		'USERNAME': os.environ.get("MEMCACHEDCLOUD_USERNAME"),
+        		'PASSWORD': os.environ.get("MEMCACHEDCLOUD_PASSWORD")
+    		}
     	}
 	}
 # Password validation

@@ -4,5 +4,6 @@ django-heroku==0.3.1
 gunicorn==20.0.4
 psycopg2-binary
 pytz==2018.9
+pylibmc==1.1
 whitenoise==5.1.0
 mysqlclient
