@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-import django_heroku
+import dj_database_url
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "0f22298fabf5dff32a7cbc73613f0106dfb67a4d9bb35424"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -41,7 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
 	"django.middleware.security.SecurityMiddleware",
-	#"whitenoise.middleware.WhiteNoiseMiddleware",
+	"whitenoise.middleware.WhiteNoiseMiddleware",
 	"django.contrib.sessions.middleware.SessionMiddleware",
 	"django.middleware.common.CommonMiddleware",
 	"django.middleware.csrf.CsrfViewMiddleware",
@@ -73,7 +74,7 @@ WSGI_APPLICATION = "CTFFinal.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-MODE = 'development'
+MODE = 'production'
 
 if MODE == 'development':
 	DATABASES = {
@@ -85,10 +86,8 @@ if MODE == 'development':
 
 elif MODE == 'production':
 	DATABASES = {
-		"default": {
-			"ENGINE": "django.db.backends.sqlite3",
-			"NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-		},
+		"default": dj_database_url.config(conn_max_age=500),
+		
 		"receipts": {
 			"ENGINE": "django.db.backends.mysql",
 			"NAME": os.environ.get("DB_NAME"),
@@ -166,8 +165,7 @@ AUTH_USER_MODEL = "app.Team"
 STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SECURE_SSL_REDIRECT = False
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SECURE_SSL_REDIRECT = True
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-if MODE == 'production':
-	django_heroku.settings(locals())
