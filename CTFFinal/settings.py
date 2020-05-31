@@ -112,11 +112,11 @@ elif MODE == 'production':
 	CACHES = {
     	
     	'default': {
-        	'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        	'LOCATION': os.environ.get("MEMCACHEDCLOUD_SERVERS"),
+        	'BACKEND': 'django_bmemcached.memcached.BMemcached',
+        	'LOCATION': os.environ.get("MEMCACHIER_SERVERS"),
         	'OPTIONS':{
-        		'USER': os.environ.get("MEMCACHEDCLOUD_USERNAME"),
-        		'PASSWORD': os.environ.get("MEMCACHEDCLOUD_PASSWORD")
+        		'username': os.environ.get("MEMCACHIER_USERNAME"),
+        		'password': os.environ.get("MEMCACHIER_PASSWORD")
     		}
     	}
 	}
