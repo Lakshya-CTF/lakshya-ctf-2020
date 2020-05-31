@@ -70,7 +70,7 @@
                 <div class="col-md-12">
                     <div class="countdown-timer"></div>
                      {% for message in messages %}
-                            <div class="alert alert-dismissible fade show alert-success" role="alert">
+                            <div class="alert alert-dismissible fade show alert-danger" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                                 </button>
@@ -97,26 +97,28 @@
                                 <a href="/Uploads/{{ challenge.questionData }}" class="btn btn-outline-secondary btn-shadow"><span class="fa fa-download mr-2"></span>Download</a>
                                 {% endif %}
                                 <a onclick="getHint({{ challenge.questionId }})" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow"><span class="far fa-lightbulb mr-2"></span>Hint</a>
+
+                                <form method="POST">
+                                    {% csrf_token  %}
                                 <div class="input-group mt-3">
                                     
                                     <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio2_p2" name="customRadio_p2" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio2_p2">Easy</label>
+                                        <input type="radio" id="rating" name="rating" value="easy" class="custom-control-input" required>
+                                        <label class="custom-control-label" for="rating">Easy</label>
                                     </div>
                                     <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio3_p2" name="customRadio_p2" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio3_p2">Medium</label>
+                                        <input type="radio" id="rating" name="rating" value="medium" class="custom-control-input">
+                                        <label class="custom-control-label" for="rating">Medium</label>
                                     </div>
                                     <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio4_p2" name="customRadio_p2" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio4_p2">Hard</label>
+                                        <input type="radio" id="rating" name="rating" value="hard" class="custom-control-input">
+                                        <label class="custom-control-label" for="rating">Hard</label>
                                     </div>
                                   
                                 </div>
                                 <div class="input-group mt-3">
-                                    <form method="POST">
-                                        {% csrf_token  %}
-                                    <input type="text" id="flag" name="flag" class="form-control" placeholder="Enter Flag" aria-label="Enter Flag" aria-describedby="basic-addon2">
+                                    
+                                    <input type="text" id="flag" name="flag" class="form-control" placeholder="Enter Flag" aria-label="Enter Flag" aria-describedby="basic-addon2" required>
                                     <input type="hidden" id="qid" name="qid" value="{{challenge.questionId }}">
                                     <div class="input-group-append">
                                         <input type="submit" id="submit_p2" class="btn btn-outline-secondary" value="Go!">
