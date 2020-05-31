@@ -16,7 +16,7 @@
         <link rel='stylesheet' href="{% static 'app/css/hack.min.css' %}">
         
         <link rel="stylesheet" href="{% static 'app/css/main.css' %}">
-        <link rel="stylesheet" href="{% static 'app/css/flipclock.min.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/flipclock.css' %}">
 
         <script src="{% static 'app/js/jquery-3.4.1.min.js' %}" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="></script>
         <script src="{% static 'app/js/popper.min.js' %}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"></script>
@@ -24,7 +24,7 @@
         
         <script src="{% static 'app/js/moment.min.js' %}"></script>
         <script src="{% static 'app/js/chart.min.js' %}"></script>
-        <script src="{% static 'app/js/flipclock.min.js' %}"></script>
+        <script src="{% static 'app/js/flipclock.js' %}"></script>
         <script src="{% static 'app/js/preloader.js' %}"></script>
         <script src="{% static 'app/js/questionLogic.js' %}"></script>
 </head>
@@ -66,9 +66,19 @@
                 </div>
             </div>
 
+            <div class="row justify-content-center mb-3">
+                <div class="col-md-6">
+                    <div class="countdown-timer"></div>
+                </div>
+            </div>
+            <div class="row justify-content-center mb-3">
+                <div class="col-md-12 text-center">
+                    <h3 style="font-size: 2rem">Score: 10000</h3>
+                </div>
+            </div>
+
             <div class="row hackerFont">
                 <div class="col-md-12">
-                    <div class="countdown-timer"></div>
                      {% for message in messages %}
                             <div class="alert alert-dismissible fade show alert-danger" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -101,25 +111,23 @@
                                 <form method="POST">
                                     {% csrf_token  %}
                                 <div class="input-group mt-3">
-                                    
                                     <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="rating" name="rating" value="easy" class="custom-control-input" required>
-                                        <label class="custom-control-label" for="rating">Easy</label>
+                                        <input type="radio" id="customRadio1_p{{ challenge.questionId }}" name="customRadio_p{{ challenge.questionId }}" class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadio1_p{{ challenge.questionId }}">Easy</label>
                                     </div>
                                     <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="rating" name="rating" value="medium" class="custom-control-input">
-                                        <label class="custom-control-label" for="rating">Medium</label>
+                                        <input type="radio" id="customRadio2_p{{ challenge.questionId }}" name="customRadio_p{{ challenge.questionId }}" class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadio2_p{{ challenge.questionId }}">Medium</label>
                                     </div>
                                     <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="rating" name="rating" value="hard" class="custom-control-input">
-                                        <label class="custom-control-label" for="rating">Hard</label>
+                                        <input type="radio" id="customRadio3_p{{ challenge.questionId }}" name="customRadio_p{{ challenge.questionId }}" class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadio3_p{{ challenge.questionId }}">Hard</label>
                                     </div>
-                                  
                                 </div>
                                 <div class="input-group mt-3">
                                     
                                     <input type="text" id="flag" name="flag" class="form-control" placeholder="Enter Flag" aria-label="Enter Flag" aria-describedby="basic-addon2" required>
-                                    <input type="hidden" id="qid" name="qid" value="{{challenge.questionId }}">
+                                    <input type="hidden" id="qid" name="qid" value="{{challenge.questionId }}" required>
                                     <div class="input-group-append">
                                         <input type="submit" id="submit_p2" class="btn btn-outline-secondary" value="Go!">
                                     </div>
@@ -153,7 +161,6 @@
                     </div>
                 </div>
                 {% endfor %}
-                
             <div class="row hackerFont justify-content-center mt-5">
                 <div class="col-md-12">
                     Chart Difficulties: 
