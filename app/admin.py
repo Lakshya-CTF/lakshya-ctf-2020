@@ -10,4 +10,3 @@ admin.site.index_title = "Adminsitration"
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Questions)
 admin.site.register(Machines)
-admin.site.register(SolvedTimestamps)
