@@ -83,17 +83,5 @@
         <script src="{% static 'app/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"></script>
         <script src="{% static 'app/js/preloader.js' %}"></script>
 
-        <script type="text/javascript">
-        $(document).ready(function() {
-            $(window).on('load',function() {
-
-                if (!sessionStorage.getItem( 'doNotShow' ) ) {
-                    sessionStorage.setItem( 'doNotShow', true );
-                } else {
-                   $ ('#preloader').hide();
-                }
-            });
-        });
-        </script>
-       
+        
 </html>
