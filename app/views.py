@@ -104,9 +104,9 @@ def machine(request,id = 1):
 		challenges = len(Questions.objects.all()) 
 		machines = len(Machines.objects.all())
 		request.session["timer"] = time.time()
-		request.session["questions_solved"] = [0 for i in range(1,challenges+1)]
-		request.session["machines_solved_user"] = [0 for i in range(1,machines+1)]
-		request.session["machines_solved_root"] = [0 for i in range(1,machines+1)]
+		request.session["questions_solved"] = [0 for i in range(challenges)]
+		request.session["machines_solved_user"] = [0 for i in range(machines)]
+		request.session["machines_solved_root"] = [0 for i in range(machines)]
 		request.session["hints"] = [0 for i in range(challenges)]
 
 	machine = Machines.objects.get(id = id)
@@ -114,8 +114,8 @@ def machine(request,id = 1):
 		rating = request.POST.get("radio_btn")
 		flag = request.POST.get("flag")
 		if machine.userFlag == flag:
-			if not request.session["machines_solved_user"][id]:
-				request.session["machines_solved_user"][id] = 1
+			if not request.session["machines_solved_user"][id-1]:
+				request.session["machines_solved_user"][id-1] = 1
 				request.user.points += int((0.4) * machine.machinePoints)
 				request.session.save()
 				request.user.save()
@@ -124,8 +124,8 @@ def machine(request,id = 1):
 				messages.error(request,"Already solved!")
 
 		elif machine.rootFlag == flag:
-			if not request.session["machines_solved_root"][id]:
-				request.session["machines_solved_root"][id] = 1
+			if not request.session["machines_solved_root"][id-1]:
+				request.session["machines_solved_root"][id-1] = 1
 				machine.machineSolvers += 1
 				if rating == "EA":
 					machine.easyRating += 1
@@ -167,9 +167,9 @@ def quest(request):
 		challenges = len(Questions.objects.all()) 
 		machines = len(Machines.objects.all())
 		request.session["timer"] = time.time()
-		request.session["questions_solved"] = [0 for i in range(1,challenges+1)]
-		request.session["machines_solved_user"] = [0 for i in range(1,machines+1)]
-		request.session["machines_solved_root"] = [0 for i in range(1,machines+1)]
+		request.session["questions_solved"] = [0 for i in range(challenges)]
+		request.session["machines_solved_user"] = [0 for i in range(machines)]
+		request.session["machines_solved_root"] = [0 for i in range(machines)]
 		request.session["hints"] = [0 for i in range(challenges)]
 
 	questions = Questions.objects.all()
@@ -180,12 +180,12 @@ def quest(request):
 		rating = request.POST.get("radio_btn")
 		question = Questions.objects.get(questionId=flag_id)
 		if flag == question.questionFlag:
-			if not request.session["questions_solved"][flag_id]:
+			if not request.session["questions_solved"][flag_id - 1]:
 				request.user.points += question.questionPoints
 				messages.success(request, "Flag is correct!")
 				request.user.timeRequired = time.time() - request.session.get(
 					"timer")
-				request.session["questions_solved"][flag_id] = 1
+				request.session["questions_solved"][flag_id - 1] = 1
 				question.questionSolvers += 1
 
 				if rating == "EA":
