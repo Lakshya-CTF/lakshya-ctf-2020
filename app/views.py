@@ -97,7 +97,7 @@ def about(request):
 @login_required(login_url="/login/")
 def machine(request,id = 1):
 	
-
+	machine = Machines.objects.get(id = id)
 
 	if "hints" not in request.session and "questions_solved" not in request.session and "machines_solved_user" not in request.session and "machines_solved_root" not in request.session:
 		
@@ -109,7 +109,7 @@ def machine(request,id = 1):
 		request.session["machines_solved_root"] = [0 for i in range(machines)]
 		request.session["hints"] = [0 for i in range(challenges)]
 
-	machine = Machines.objects.get(id = id)
+	
 	if request.method == "POST":
 		rating = request.POST.get("radio_btn")
 		flag = request.POST.get("flag")
