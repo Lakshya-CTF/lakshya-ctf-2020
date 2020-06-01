@@ -15,8 +15,7 @@ import CTFFinal.settings as settings
 
 from django.views.decorators.cache import cache_page
 
-challenges = len(Questions.objects.all()) 
-machines = len(Machines.objects.all())
+
 event_time = 2700
 
 # Create your views here.
@@ -97,8 +96,13 @@ def about(request):
 @gzip_page
 @login_required(login_url="/login/")
 def machine(request,id = 1):
+	
+
 
 	if "hints" not in request.session and "questions_solved" not in request.session and "machines_solved_user" not in request.session and "machines_solved_root" not in request.session:
+		
+		challenges = len(Questions.objects.all()) 
+		machines = len(Machines.objects.all())
 		request.session["timer"] = time.time()
 		request.session["questions_solved"] = [0 for i in range(challenges)]
 		request.session["machines_solved_user"] = [0 for i in range(machines)]
@@ -159,6 +163,9 @@ def teamlogout(request):
 @cache_page(60 * 1)
 def quest(request):
 	if "hints" not in request.session and "questions_solved" not in request.session and "machines_solved_user" not in request.session and "machines_solved_root" not in request.session:
+		
+		challenges = len(Questions.objects.all()) 
+		machines = len(Machines.objects.all())
 		request.session["timer"] = time.time()
 		request.session["questions_solved"] = [0 for i in range(challenges)]
 		request.session["machines_solved_user"] = [0 for i in range(machines)]
