@@ -96,8 +96,8 @@ def about(request):
 @gzip_page
 @login_required(login_url="/login/")
 def machine(request,id = 1):
-	
-	machine = Machines.objects.get(id = id)
+
+	machine = Machines.objects.get(machineId = id)
 
 	if "hints" not in request.session and "questions_solved" not in request.session and "machines_solved_user" not in request.session and "machines_solved_root" not in request.session:
 		
