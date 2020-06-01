@@ -104,9 +104,9 @@ def machine(request,id = 1):
 		challenges = len(Questions.objects.all()) 
 		machines = len(Machines.objects.all())
 		request.session["timer"] = time.time()
-		request.session["questions_solved"] = [0 for i in range(challenges)]
-		request.session["machines_solved_user"] = [0 for i in range(machines)]
-		request.session["machines_solved_root"] = [0 for i in range(machines)]
+		request.session["questions_solved"] = [0 for i in range(1,challenges+1)]
+		request.session["machines_solved_user"] = [0 for i in range(1,machines+1)]
+		request.session["machines_solved_root"] = [0 for i in range(1,machines+1)]
 		request.session["hints"] = [0 for i in range(challenges)]
 
 	machine = Machines.objects.get(id = id)
@@ -167,9 +167,9 @@ def quest(request):
 		challenges = len(Questions.objects.all()) 
 		machines = len(Machines.objects.all())
 		request.session["timer"] = time.time()
-		request.session["questions_solved"] = [0 for i in range(challenges)]
-		request.session["machines_solved_user"] = [0 for i in range(machines)]
-		request.session["machines_solved_root"] = [0 for i in range(machines)]
+		request.session["questions_solved"] = [0 for i in range(1,challenges+1)]
+		request.session["machines_solved_user"] = [0 for i in range(1,machines+1)]
+		request.session["machines_solved_root"] = [0 for i in range(1,machines+1)]
 		request.session["hints"] = [0 for i in range(challenges)]
 
 	questions = Questions.objects.all()
