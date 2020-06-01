@@ -44,10 +44,10 @@
                     </div>
                     <div class="navbar-nav ml-auto">
                         <a href="/" class="p-3 text-decoration-none text-light bold">Home</a>
-                        <a href="/about" class="p-3 text-decoration-none text-light bold">About</a>
-                        <a href="/leaderboard" class="p-3 text-decoration-none text-light bold">Hackerboard</a>
-                        <a href="/quests" class="p-3 text-decoration-none text-white bold">Challenges</a>
-                        <a href="#" class="p-3 text-decoration-none text-light bold">Logout</a>
+                         <a href="/about" class="p-3 text-decoration-none text-white bold">About</a>
+                        <a href="/instructions" class="p-3 text-decoration-none text-light bold">Instructions</a>
+                        <a href="/leaderboard" class="p-3 text-decoration-none text-light bold">Leaderboard</a>
+                        <a href="/logout" class="p-3 text-decoration-none text-light bold">Logout</a>
                     </div>
                 </div>
             </nav>
@@ -61,7 +61,7 @@
                 <div class="col-xl-12  text-center">
                     <h1 class="display-1 bold color_white content__title">QUESTS<span class="vim-caret">&nbsp;</span></h1>
                     <p class="text-grey text-spacey hackerFont lead mb-5">
-                        Its time to show the world what you can do!
+                        It's time to show the world what you can do!
                     </p>
                 </div>
             </div>
@@ -73,7 +73,7 @@
             </div>
             <div class="row justify-content-center mb-3">
                 <div class="col-md-12 text-center">
-                    <h3 style="font-size: 2rem">Score: 10000</h3>
+                    <h3 style="font-size: 2rem">Score: {{ request.user.points }}</h3>
                 </div>
             </div>
 
@@ -101,27 +101,27 @@
                                     <h6 class="solvers">Solvers: <span class="solver_num">{{ challenge.questionSolvers }}</span> &nbsp;<span class="color_danger">Difficulty:</span></h6>
                                     <div class="pl-2"><canvas style="width:80px;height:20px" id="problem_id_{{ challenge.questionId}}_chart"></canvas></div>
                                 </div>
-                                <p> Can you find the password? Enter the password as flag in the following form: lakshya_CTF{passwordhere}
+                                <p> {{ challenge.questionDescription }}
                                 </p>
                                 {% if challenge.questionData|safe %}
                                 <a href="/Uploads/{{ challenge.questionData }}" class="btn btn-outline-secondary btn-shadow"><span class="fa fa-download mr-2"></span>Download</a>
                                 {% endif %}
-                                <a onclick="getHint({{ challenge.questionId }})" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow"><span class="far fa-lightbulb mr-2"></span>Hint</a>
+                                <a onclick="getHint({{challenge.questionId}})" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow"><span class="far fa-lightbulb mr-2"></span>Hint</a>
 
                                 <form method="POST">
                                     {% csrf_token  %}
                                 <div class="input-group mt-3">
                                     <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio1_p{{ challenge.questionId }}" name="customRadio_p{{ challenge.questionId }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio1_p{{ challenge.questionId }}">Easy</label>
+                                        <input type="radio" id="radio1_{{ challenge.questionId }}" name="radio_btn" class="custom-control-input" value="EA">
+                                        <label class="custom-control-label" for="radio1_{{ challenge.questionId }}">Easy</label>
                                     </div>
                                     <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio2_p{{ challenge.questionId }}" name="customRadio_p{{ challenge.questionId }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio2_p{{ challenge.questionId }}">Medium</label>
+                                        <input type="radio" id="radio2_{{ challenge.questionId }}" name="radio_btn" class="custom-control-input" value="ME">
+                                        <label class="custom-control-label" for="radio2_{{ challenge.questionId }}">Medium</label>
                                     </div>
                                     <div class="ht-tm-element custom-control custom-radio">
-                                        <input type="radio" id="customRadio3_p{{ challenge.questionId }}" name="customRadio_p{{ challenge.questionId }}" class="custom-control-input">
-                                        <label class="custom-control-label" for="customRadio3_p{{ challenge.questionId }}">Hard</label>
+                                        <input type="radio" id="radio3_{{ challenge.questionId }}" name="radio_btn" class="custom-control-input" value="HA">
+                                        <label class="custom-control-label" for="radio3_{{ challenge.questionId }}">Hard</label>
                                     </div>
                                 </div>
                                 <div class="input-group mt-3">

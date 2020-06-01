@@ -38,10 +38,10 @@
                         </div>
                         <div class="navbar-nav ml-auto">
                             <a href="/" class="p-3 text-decoration-none text-light bold">Home</a>
-                            <a href="/about" class="p-3 text-decoration-none text-light bold">About</a>
-                            <a href="/leaderboard" class="p-3 text-decoration-none text-light bold">Hackerboard</a>
-                            <a href="/login" class="p-3 text-decoration-none text-white bold">Login</a>
+                            <a href="/instructions" class="p-3 text-decoration-none text-light bold">Instructions</a>
+                            <a href="/leaderboard" class="p-3 text-decoration-none text-light bold">Leaderboard</a>
                             <a href="/register" class="p-3 text-decoration-none text-light bold">Register</a>
+                            <a href="/quest" class="p-3 text-decoration-none text-white bold">Challenges</a>
                         </div>
                     </div>
                 </nav>
@@ -53,7 +53,7 @@
                     <div class="col-xl-8">
                         <h1 class="display-1 bold color_white content__title">LAKSHYA CTF<span class="vim-caret">&nbsp;</span></h1>
                         <p class="text-grey text-spacey hackerFont lead mb-5">
-                            Type your credentials to conquer the world
+                            Enter your credentials
                         </p>
                         {% for message in messages %}
                             <div class="alert alert-dismissible fade show alert-danger" role="alert">
@@ -68,11 +68,11 @@
                             <div class="row hackerFont">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="teamname" id="teamname" placeholder="Team Name">
+                                        <input type="text" class="form-control" name="teamname" id="teamname" placeholder="Username">
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                                        <small id="passHelp" class="form-text text-muted">Make sure nobody's behind you</small>
+                                        <small id="passHelp" class="form-text text-muted">Make sure nobody is behind you</small>
                                     </div>
                                 </div>
                             </div>

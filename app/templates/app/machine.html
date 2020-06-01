@@ -39,11 +39,11 @@
                         </a>
                     </div>
                     <div class="navbar-nav ml-auto">
-                        <a href="index.html" class="p-3 text-decoration-none text-light bold">Home</a>
-                        <a href="about.html" class="p-3 text-decoration-none text-light bold">About</a>
-                        <a href="hackerboard.html" class="p-3 text-decoration-none text-light bold">Hackerboard</a>
-                        <a href="quests.html" class="p-3 text-decoration-none text-white bold">Challenges</a>
-                        <a href="#" class="p-3 text-decoration-none text-light bold">Logout</a>
+                        <a href="/" class="p-3 text-decoration-none text-light bold">Home</a>
+                        <a href="/instructions" class="p-3 text-decoration-none text-light bold">Instructions</a>
+                        <a href="/leaderboard" class="p-3 text-decoration-none text-light bold">Leaderboard</a>
+                        <a href="/quest" class="p-3 text-decoration-none text-white bold">Challenges</a>
+                        <a href="/logout" class="p-3 text-decoration-none text-light bold">Logout</a>
                     </div>
                 </div>
             </nav>
@@ -96,6 +96,8 @@
                     <div class="card border-primary mb-3 text-center">
                         <div class="card-body">
                             <h4>Rate the challenge</h4>
+                            <form method="POST">
+                                {% csrf_token %}
                             <div class="row input-group mt-3 justify-content-center">
                                 
                                 <div class="ht-tm-element custom-control custom-radio">
@@ -112,6 +114,7 @@
                                 </div>
                                 
                             </div>
+                        </form>
                             <div class="row justify-content-center pb-3">
                                 <div class="input-group mt-3 col-md-6">
                                     <input type="text" class="form-control" placeholder="Enter Flag" aria-label="Enter Flag" aria-describedby="basic-addon2">

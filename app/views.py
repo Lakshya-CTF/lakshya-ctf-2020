@@ -95,7 +95,7 @@ def about(request):
 
 @gzip_page
 def machine(request,id = 1):
-    
+
     machine = Machines.objects.get(id = id)
     return render(request,"app/machine.html", {'machine': machine })
 
@@ -121,15 +121,26 @@ def quest(request):
     if request.method == "POST":
         flag = request.POST.get("flag")
         flag_id = int(request.POST.get("qid"))
+        rating = request.POST.get("radio_btn")
         question = Questions.objects.get(questionId=flag_id)
         if flag == question.questionFlag:
             if not request.session["solved"][flag_id]:
                 request.user.points += question.questionPoints
-                messages.success(request, "Correct!")
+                messages.success(request, "Flag is correct!")
                 request.user.timeRequired = time.time() - request.session.get(
                     "timer")
                 request.session["solved"][flag_id] = 1
                 question.questionSolvers += 1
+
+                if rating == "EA":
+                    question.easyRating += 1
+
+                elif rating == "ME":
+                    question.mediumRating += 1
+
+                elif rating == "HA":
+                    question.hardRating += 1
+
                 SolvedTimestamps(username=request.user,points=request.user.points).save() 
                 question.save()
                 request.user.save()

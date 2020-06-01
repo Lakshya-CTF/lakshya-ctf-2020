@@ -33,7 +33,7 @@ urlpatterns = [
     url(r"^$", views.index),
     url(r"^login/", views.teamlogin),
     url(r"^register/", views.register),
-    url(r"^quests/", views.quest),
+    url(r"^quest/", views.quest),
     url(r"^logout/", views.teamlogout),
     url(r"^leaderboard/", views.leaderboard),
     url(r"^timer/", views.timer),
