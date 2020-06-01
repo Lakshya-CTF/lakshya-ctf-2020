@@ -63,6 +63,7 @@ class Questions(models.Model):
 
 class Machines(models.Model):
     
+    machineId = models.AutoField(primary_key=True,verbose_name = "ID")
     machineTitle = models.CharField(max_length=20, verbose_name = "Name")
     machineIp = models.CharField(max_length=20,verbose_name = "IP Address")
     machinePoints = models.IntegerField(default=0,verbose_name = "Points")
@@ -76,6 +77,9 @@ class Machines(models.Model):
     easyRating = models.IntegerField(default = 0,verbose_name = "Easy Raters")
     mediumRating = models.IntegerField(default = 0,verbose_name = "Medium Raters")
     hardRating = models.IntegerField(default = 0,verbose_name = "Hard Raters")
+    
+    userFlag = models.CharField(max_length=50,default="lakshya_CTF{hack_me_now}")
+    rootFlag = models.CharField(max_length=50,default="lakshya_CTF{hack_me_now}")
 
     def __str__(self):
         return self.machineIp

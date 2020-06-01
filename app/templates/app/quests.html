@@ -154,7 +154,7 @@
                                 <div class="pl-4 machine" style="display: inline-flex;">
                                     {{ machine.machineIp }}
                                     <h4 class=" pl-4 pt-1 solvers">Solvers: <span class="solver_num">{{ machine.machineSolvers }}</span> &nbsp;<span class="color_danger">Difficulty:</span></h4>
-                                    <div class="pl-2"><canvas style="width:80px;height:40px" id="problem_id_7_chart"></canvas></div>
+                                    <div class="pl-2"><canvas style="width:80px;height:40px" id="problem_id_{{ num_challenges|add:machine.machineId }}_chart"></canvas></div>
                                 </div>
                             </div>
                         </a>
@@ -192,6 +192,10 @@
             dataset.push([{{ challenge.easyRating }}, {{ challenge.mediumRating }}, {{ challenge.hardRating }} ]);
             {% endfor %}
 
+            {% for machine in machines %}
+            dataset.push([{{ machine.easyRating }}, {{ machine.mediumRating }}, {{ machine.hardRating }} ]);
+            {% endfor %}
+
             function getBarChartData(i) {
                 return barChartData = {
                     labels: ['Easy','Medium', 'Hard'],
@@ -211,7 +215,7 @@
             }
 
             window.onload = function() {
-                var numcharts = {{ num_challenges }};
+                var numcharts = {{ total_count }};
                 for (let i = 1; i <= numcharts; i++) {
                     var ctx = document.getElementById('problem_id_' + i + '_chart').getContext('2d');
                     window.myBar = new Chart(ctx, {

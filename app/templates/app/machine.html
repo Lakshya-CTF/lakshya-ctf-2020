@@ -57,13 +57,13 @@
                 <div class="col-xl-12  text-center">
                     <h1 class="display-1 bold color_white content__title">{{ machine.machineTitle|upper }}<span class="vim-caret">&nbsp;</span></h1>
                     <p class="text-grey text-spacey hackerFont lead mb-5">
-                        Some random info about the machine if any. Some random info about the machine if any.
+                        {{ machine.machineDescription }}
                     </p>
                 </div>
             </div>
             <div class="row hackerFont">
             </div>
-            <h4>Machine info</h4>
+            <h4>Machine Information</h4>
             <div class="row mt-5">
                 <div class="col-md-6">
                     <div class="card border-primary mb-3 text-center">
@@ -100,29 +100,30 @@
                                 {% csrf_token %}
                             <div class="row input-group mt-3 justify-content-center">
                                 
-                                <div class="ht-tm-element custom-control custom-radio">
-                                    <input type="radio" id="customRadio2_p1" name="customRadio_p1" class="custom-control-input">
-                                    <label class="custom-control-label" for="customRadio2_p1">Easy</label>
-                                </div>
-                                <div class="ht-tm-element custom-control custom-radio">
-                                    <input type="radio" id="customRadio3_p1" name="customRadio_p1" class="custom-control-input">
-                                    <label class="custom-control-label" for="customRadio3_p1">Medium</label>
-                                </div>
-                                <div class="ht-tm-element custom-control custom-radio">
-                                    <input type="radio" id="customRadio4_p1" name="customRadio_p1" class="custom-control-input">
-                                    <label class="custom-control-label" for="customRadio4_p1">Hard</label>
-                                </div>
+                                    <div class="ht-tm-element custom-control custom-radio">
+                                        <input type="radio" id="radio1_{{ machine.questionId }}" name="radio_btn" class="custom-control-input" value="EA">
+                                        <label class="custom-control-label" for="radio1_{{ machine.questionId }}">Easy</label>
+                                    </div>
+                                    <div class="ht-tm-element custom-control custom-radio">
+                                        <input type="radio" id="radio2_{{ machine.questionId }}" name="radio_btn" class="custom-control-input" value="ME">
+                                        <label class="custom-control-label" for="radio2_{{ machine.questionId }}">Medium</label>
+                                    </div>
+                                    <div class="ht-tm-element custom-control custom-radio">
+                                        <input type="radio" id="radio3_{{ machine.questionId }}" name="radio_btn" class="custom-control-input" value="HA">
+                                        <label class="custom-control-label" for="radio3_{{ machine.questionId }}">Hard</label>
+                                    </div>
                                 
                             </div>
-                        </form>
+
                             <div class="row justify-content-center pb-3">
                                 <div class="input-group mt-3 col-md-6">
-                                    <input type="text" class="form-control" placeholder="Enter Flag" aria-label="Enter Flag" aria-describedby="basic-addon2">
+                                    <input type="text" class="form-control" placeholder="Enter Flag" aria-label="Enter Flag" name="flag" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
-                                        <button id="submit_p1" class="btn btn-outline-secondary" type="button">Go!</button>
+                                        <input type="submit" id="submit" class="btn btn-outline-secondary" value="Go!" placeholder="Go!">
                                     </div>
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>

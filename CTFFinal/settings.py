@@ -159,7 +159,7 @@ AUTH_USER_MODEL = "app.Team"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "Uploads")
 
-MEDIA_URL = "Uploads/"
+MEDIA_URL = "downloads/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -169,6 +169,9 @@ AUTH_USER_MODEL = "app.Team"
 STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+TIME_ZONE = 'Asia/Calcutta'
+USE_TZ = True
+
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
