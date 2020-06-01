@@ -104,7 +104,7 @@
                                 <p> {{ challenge.questionDescription }}
                                 </p>
                                 {% if challenge.questionData|safe %}
-                                <a href="/Uploads/{{ challenge.questionData }}" class="btn btn-outline-secondary btn-shadow"><span class="fa fa-download mr-2"></span>Download</a>
+                                <a href="/downloads/{{ challenge.questionData }}" class="btn btn-outline-secondary btn-shadow"><span class="fa fa-download mr-2"></span>Download</a>
                                 {% endif %}
                                 <a onclick="getHint({{challenge.questionId}})" data-toggle="modal" data-target="#hint" class="btn btn-outline-secondary btn-shadow"><span class="far fa-lightbulb mr-2"></span>Hint</a>
 

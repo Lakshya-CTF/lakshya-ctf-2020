@@ -41,7 +41,7 @@ def teamlogin(request):
 		if team is not None:
 			if team.played == False:
 				login(request, team)
-				return redirect("/quests")
+				return redirect("/quest")
 			else:
 				messages.error(request, "Already played!")
 		else:
@@ -163,7 +163,7 @@ def teamlogout(request):
 @cache_page(60 * 1)
 def quest(request):
 	if "hints" not in request.session and "questions_solved" not in request.session and "machines_solved_user" not in request.session and "machines_solved_root" not in request.session:
-		
+
 		challenges = len(Questions.objects.all()) 
 		machines = len(Machines.objects.all())
 		request.session["timer"] = time.time()
