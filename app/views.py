@@ -97,6 +97,10 @@ def machine(request,id = 1):
 	if timezone.localtime().timestamp() < config.START_TIME.timestamp():
 		return render(request, "app/instructions.html")
 
+	if timezone.localtime().timestamp() > config.END_TIME.timestamp():
+		return render(request,"app/leaderboard.html")
+
+
 
 	machine = Machines.objects.get(machineId = id)
 
@@ -163,6 +167,9 @@ def quest(request):
 
 	if timezone.localtime().timestamp() < config.START_TIME.timestamp():
 		return render(request,"app/instructions.html")
+
+	if timezone.localtime().timestamp() > config.END_TIME.timestamp():
+		return render(request,"app/leaderboard.html")
 
 	questions = Questions.objects.all().order_by('questionId')
 	machines = Machines.objects.all().order_by('machineId')
