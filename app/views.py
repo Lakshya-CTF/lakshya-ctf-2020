@@ -154,7 +154,6 @@ def machine(request,id = 1):
 
 def teamlogout(request):
 	request.user.timeRequired = timezone.localtime().timestamp() - request.session.get("time")
-	request.user.played = True
 	request.user.save()
 	logout(request)
 	return redirect("/leaderboard")
@@ -244,7 +243,12 @@ def leaderboard(request):
 def timer(request):
 	''' TODO: Logout from backend '''
 	if request.method == "GET":
-		return HttpResponse(int(config.END_TIME.timestamp() - timezone.localtime().timestamp()))
+		difference = int(config.END_TIME.timestamp() - timezone.localtime().timestamp())
+		if difference == 0:
+			request.user.timeRequired = timezone.localtime().timestamp() - request.session.get("time")
+			request.user.save()
+			logout(request)
+		return HttpResponse(difference)
 
 
 @csrf_protect
