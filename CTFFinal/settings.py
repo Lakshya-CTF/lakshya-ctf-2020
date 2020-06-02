@@ -14,7 +14,7 @@ import os
 import dj_database_url
 from django.utils import timezone
 from datetime import datetime, timedelta
-
+from pytz import all_timezones
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -151,7 +151,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Calcutta"
 
 USE_I18N = True
 
@@ -173,15 +173,23 @@ AUTH_USER_MODEL = "app.Team"
 STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-TIME_ZONE = 'Asia/Calcutta'
-USE_TZ = True
+
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
+CONSTANCE_ADDITIONAL_FIELDS = {
+    'timezone_select': ['django.forms.fields.ChoiceField', {
+        'widget': 'django.forms.Select',
+        'choices': tuple(zip(all_timezones,all_timezones))
+    }],
+}
 
 CONSTANCE_CONFIG = {
     'START_TIME': (timezone.now(),'Start Time of the Event',datetime),
     'END_TIME': (timezone.now() + timedelta(minutes = 60),'End Time of the Event',datetime),
+    'TIME_ZONE': ('Asia/Calcutta','Set the Time Zone','timezone_select')
 }
+
+
