@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
 	"constance",
 	"app",
+	"compressor",
 	"constance.backends.database",
 	"django.contrib.admin",
 	"django.contrib.auth",
@@ -173,7 +174,12 @@ AUTH_USER_MODEL = "app.Team"
 STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
+COMPRESS_ENABLED = True
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -191,5 +197,4 @@ CONSTANCE_CONFIG = {
     'END_TIME': (timezone.now() + timedelta(minutes = 60),'End Time of the Event',datetime),
     'TIME_ZONE': ('Asia/Calcutta','Set the Time Zone','timezone_select')
 }
-
 
