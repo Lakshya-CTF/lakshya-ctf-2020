@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import dj_database_url
 from django.utils import timezone
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -176,12 +176,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 TIME_ZONE = 'Asia/Calcutta'
 USE_TZ = True
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
 
 CONSTANCE_CONFIG = {
     'START_TIME': (timezone.now(),'Start Time of the Event',datetime),
-    'END_TIME': (timezone.now(),'End Time of the Event',datetime),
+    'END_TIME': (timezone.now() + timedelta(minutes = 60),'End Time of the Event',datetime),
 }

@@ -9,15 +9,10 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from .models import Questions, Team, Events, SolvedTimestamps, Machines, SolvedQuestions, SolvedMachines,TakenQuestionHint
-import time
 import CTFFinal.settings as settings 
+from django.utils import timezone
 from constance import config
 from django.views.decorators.cache import cache_page
-
-
-event_time = 2700
-
-# Create your views here.
 
 
 def handler404(request, exception, *args, **kwargs):
@@ -33,16 +28,19 @@ def handler500(request):
 @gzip_page
 def teamlogin(request):
 	''' TODO: Do not permit multiple sessions '''
+	
 	if request.method == "POST":
 		username = request.POST.get("teamname")
 		password = request.POST.get("password")
 		team = authenticate(username=username, password=password)
 		if team is not None:
-			if team.played == False:
-				login(request, team)
-				return redirect("/quest")
-			else:
-				messages.error(request, "Already played!")
+			login(request, team)
+			if not 'time' in request.session:
+				request.session['time'] = timezone.localtime().timestamp()
+				request.session.save()
+
+			return redirect("/quest")
+
 		else:
 			messages.error(request, "Invalid credentials!")
 	return render(request, "app/login.html")
@@ -56,7 +54,6 @@ def register(request):
 		receiptid = request.POST.get("receiptid")
 		team.username = request.POST.get("teamname")
 		team.password = make_password(request.POST.get("passwd"))
-		team.timeRequired = time.time()
 		
 		if settings.MODE == 'production':
 			query_count = (Events.objects.using("receipts").filter(
@@ -72,7 +69,7 @@ def register(request):
 			team.clean_fields()
 			team.save()
 		except Exception as e:
-			messages.error(request, "Invalid form submission! ")
+			messages.error(request, "Invalid form submission!")
 			return render(request, "app/register.html")
 		login(request, team)
 		return render(request, "app/instructions.html")
@@ -96,6 +93,10 @@ def about(request):
 @gzip_page
 @login_required(login_url="/login/")
 def machine(request,id = 1):
+
+	if timezone.localtime().timestamp() < config.START_TIME.timestamp():
+		return render(request, "app/instructions.html")
+
 
 	machine = Machines.objects.get(machineId = id)
 
@@ -148,7 +149,7 @@ def machine(request,id = 1):
 	return render(request,"app/machine.html", {'machine': machine })
 
 def teamlogout(request):
-	request.user.timeRequired = time.time() - config.START_TIME.timestamp()
+	request.user.timeRequired = timezone.localtime().timestamp() - request.session.get("time")
 	request.user.played = True
 	request.user.save()
 	logout(request)
@@ -159,6 +160,9 @@ def teamlogout(request):
 @login_required(login_url="/login/")
 @cache_page(60 * 1)
 def quest(request):
+
+	if timezone.localtime().timestamp() < config.START_TIME.timestamp():
+		return render(request,"app/instructions.html")
 
 	questions = Questions.objects.all().order_by('questionId')
 	machines = Machines.objects.all().order_by('machineId')
@@ -176,8 +180,6 @@ def quest(request):
 
 				request.user.points += question.questionPoints
 				
-				request.user.timeRequired = time.time() - request.user.timeRequired
-
 				question.questionSolvers += 1
 
 				if rating == "EA":
@@ -193,7 +195,6 @@ def quest(request):
 				 
 				question.save()
 				request.user.save()
-				request.session.save()
 				SolvedQuestions(question = question, user = request.user).save()
 				SolvedTimestamps(username = request.user,points = request.user.points).save()
 			else:
@@ -234,9 +235,9 @@ def leaderboard(request):
 
 @login_required(login_url="/login/")
 def timer(request):
+	''' TODO: Logout from backend '''
 	if request.method == "GET":
-		return HttpResponse(event_time -
-							int(time.time() - request.session.get("timer")))
+		return HttpResponse(int(config.END_TIME.timestamp() - timezone.localtime().timestamp()))
 
 
 @csrf_protect
