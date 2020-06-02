@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import dj_database_url
+from django.utils import timezone
+from datetime import datetime
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -24,14 +26,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") == "True"
+DEBUG = True
 
-ALLOWED_HOSTS = ["lakshya-ctf.herokuapp.com"]
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
 INSTALLED_APPS = [
+	"constance",
 	"app",
+	"constance.backends.database",
 	"django.contrib.admin",
 	"django.contrib.auth",
 	"django.contrib.contenttypes",
@@ -74,7 +78,7 @@ WSGI_APPLICATION = "CTFFinal.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-MODE = 'production'
+MODE = 'development'
 
 if MODE == 'development':
 	DATABASES = {
@@ -172,13 +176,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 TIME_ZONE = 'Asia/Calcutta'
 USE_TZ = True
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 7200
-SECURE_REFERRER_POLICY = 'same-origin'
-SECURE_BROWSER_XSS_FILTER = True
-CSRF_COOKIE_SECURE = True
-SECURE_HSTS_PRELOAD = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
+
+CONSTANCE_CONFIG = {
+    'START_TIME': (timezone.now(),'Start Time of the Event',datetime),
+    'END_TIME': (timezone.now(),'End Time of the Event',datetime),
+}

@@ -8,11 +8,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from .models import Questions, Team, Events, SolvedTimestamps, Machines
+from .models import Questions, Team, Events, SolvedTimestamps, Machines, SolvedQuestions, SolvedMachines,TakenQuestionHint
 import time
 import CTFFinal.settings as settings 
-
-
+from constance import config
 from django.views.decorators.cache import cache_page
 
 
@@ -57,6 +56,7 @@ def register(request):
 		receiptid = request.POST.get("receiptid")
 		team.username = request.POST.get("teamname")
 		team.password = make_password(request.POST.get("passwd"))
+		team.timeRequired = time.time()
 		
 		if settings.MODE == 'production':
 			query_count = (Events.objects.using("receipts").filter(
@@ -99,50 +99,47 @@ def machine(request,id = 1):
 
 	machine = Machines.objects.get(machineId = id)
 
-	if "hints" not in request.session and "questions_solved" not in request.session and "machines_solved_user" not in request.session and "machines_solved_root" not in request.session:
-		
-		challenges = len(Questions.objects.all()) 
-		machines = len(Machines.objects.all())
-		request.session["timer"] = time.time()
-		request.session["questions_solved"] = [0 for i in range(challenges)]
-		request.session["machines_solved_user"] = [0 for i in range(machines)]
-		request.session["machines_solved_root"] = [0 for i in range(machines)]
-		request.session["hints"] = [0 for i in range(challenges)]
-
 	
 	if request.method == "POST":
 		rating = request.POST.get("radio_btn")
 		flag = request.POST.get("flag")
+		solved = SolvedMachines.objects.filter(machine = machine,user=request.user)
+
 		if machine.userFlag == flag:
-			if not request.session["machines_solved_user"][id-1]:
-				request.session["machines_solved_user"][id-1] = 1
+			if not solved:
+				
 				request.user.points += int((0.4) * machine.machinePoints)
-				request.session.save()
+
 				request.user.save()
+				SolvedMachines(machine = machine, user = request.user).save()
 				SolvedTimestamps(username=request.user,points=request.user.points).save()
 			else:
 				messages.error(request,"Already solved!")
 
 		elif machine.rootFlag == flag:
-			if not request.session["machines_solved_root"][id-1]:
-				request.session["machines_solved_root"][id-1] = 1
-				machine.machineSolvers += 1
-				if rating == "EA":
-					machine.easyRating += 1
+			if isinstance(solved,SolvedMachines):
+				if not solved.root:
+					
+					solved.root = True
+					machine.machineSolvers += 1
 
-				elif rating == "ME":
-					machine.mediumRating += 1 
+					if rating == "EA":
+						machine.easyRating += 1
 
-				elif rating == "HA":
-					machine.hardRating += 1
+					elif rating == "ME":
+						machine.mediumRating += 1 
 
-				request.user.points += int((0.6) * machine.machinePoints)
-				request.user.save()
-				request.session.save()
-				machine.save()
-				SolvedTimestamps(username=request.user,points=request.user.points).save()
-			else:
-				messages.error(request,"Already solved!")
+					elif rating == "HA":
+						machine.hardRating += 1
+
+					request.user.points += int((0.6) * machine.machinePoints)
+
+					request.user.save()
+					machine.save()
+					solved.save()
+					SolvedTimestamps(username=request.user,points=request.user.points).save()
+				else:
+					messages.error(request,"Already solved!")
 
 		else:
 			messages.error(request,"Invalid flag!")
@@ -151,7 +148,7 @@ def machine(request,id = 1):
 	return render(request,"app/machine.html", {'machine': machine })
 
 def teamlogout(request):
-	request.user.timeRequired = time.time() - request.session.get("timer")
+	request.user.timeRequired = time.time() - config.START_TIME.timestamp()
 	request.user.played = True
 	request.user.save()
 	logout(request)
@@ -162,30 +159,25 @@ def teamlogout(request):
 @login_required(login_url="/login/")
 @cache_page(60 * 1)
 def quest(request):
-	if "hints" not in request.session and "questions_solved" not in request.session and "machines_solved_user" not in request.session and "machines_solved_root" not in request.session:
 
-		challenges = len(Questions.objects.all()) 
-		machines = len(Machines.objects.all())
-		request.session["timer"] = time.time()
-		request.session["questions_solved"] = [0 for i in range(challenges)]
-		request.session["machines_solved_user"] = [0 for i in range(machines)]
-		request.session["machines_solved_root"] = [0 for i in range(machines)]
-		request.session["hints"] = [0 for i in range(challenges)]
+	questions = Questions.objects.all().order_by('questionId')
+	machines = Machines.objects.all().order_by('machineId')
 
-	questions = Questions.objects.all()
-	machines = Machines.objects.all()
 	if request.method == "POST":
+
 		flag = request.POST.get("flag")
 		flag_id = int(request.POST.get("qid"))
 		rating = request.POST.get("radio_btn")
 		question = Questions.objects.get(questionId=flag_id)
+		solved = SolvedQuestions.objects.filter(question=question,user=request.user)
+
 		if flag == question.questionFlag:
-			if not request.session["questions_solved"][flag_id - 1]:
+			if not solved:
+
 				request.user.points += question.questionPoints
-				messages.success(request, "Flag is correct!")
-				request.user.timeRequired = time.time() - request.session.get(
-					"timer")
-				request.session["questions_solved"][flag_id - 1] = 1
+				
+				request.user.timeRequired = time.time() - request.user.timeRequired
+
 				question.questionSolvers += 1
 
 				if rating == "EA":
@@ -197,10 +189,13 @@ def quest(request):
 				elif rating == "HA":
 					question.hardRating += 1
 
-				SolvedTimestamps(username=request.user,points=request.user.points).save() 
+				messages.success(request, "Flag is correct!")
+				 
 				question.save()
 				request.user.save()
 				request.session.save()
+				SolvedQuestions(question = question, user = request.user).save()
+				SolvedTimestamps(username = request.user,points = request.user.points).save()
 			else:
 				messages.error(request, "Already solved!")
 		else:
@@ -250,16 +245,17 @@ def hint(request):
 
 		hint_id = int(request.POST.get("hintid"))
 		question = Questions.objects.get(questionId=hint_id)
+		taken = TakenQuestionHint.objects.get(question = question, user = request.user)
+
 		questionHint = question.questionHint
 		questionPoints = question.questionPoints
 
-		if not request.session["hints"][hint_id]:
+		if not taken:
 
-			request.session["hints"][hint_id] = 1
 			request.user.points -= int(0.1 * questionPoints)
-
-		request.user.save()
-		request.session.save()
+			request.user.save()
+			TakenQuestionHint(question = question,user = request.user, hint = True).save()
+		
 		return JsonResponse({
 			"hint": questionHint,
 			"points": request.user.points

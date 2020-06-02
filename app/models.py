@@ -18,7 +18,6 @@ class Team(AbstractUser):
 
     points = models.IntegerField(default=0)
     timeRequired = models.FloatField(default=0)
-    played = models.BooleanField(default=False)
 
     def convert(self):
         return "{}:{}".format(int(self.timeRequired // 60),
@@ -97,6 +96,20 @@ class SolvedTimestamps(models.Model):
 
     def convert(self):
         return f"{self.timestamp_record.year}-{self.timestamp_record.month}-{self.timestamp_record.day} {self.timestamp_record.hour}:{self.timestamp_record.minute}:{self.timestamp_record.second}"
+
+class SolvedQuestions(models.Model):
+    question = models.ForeignKey(Questions,on_delete=models.CASCADE)
+    user = models.ForeignKey(Team,on_delete=models.CASCADE)
+
+class SolvedMachines(models.Model):
+    machine = models.ForeignKey(Machines,on_delete=models.CASCADE)
+    user = models.ForeignKey(Team,on_delete=models.CASCADE)
+    root = models.BooleanField(default = False)
+
+class TakenQuestionHint(models.Model):
+    question = models.ForeignKey(Questions,on_delete=models.CASCADE)
+    user = models.ForeignKey(Team,on_delete=models.CASCADE)
+    hint = models.BooleanField(default = False)
 
 
 class Events(models.Model):
