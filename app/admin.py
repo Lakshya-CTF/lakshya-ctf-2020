@@ -4,6 +4,7 @@ from django.contrib.sessions.models import Session
 
 admin.site.site_header = "Lakshya CTF Admin Portal"
 admin.site.index_title = "Adminsitration"
+admin.site.site_title = "Lakshya CTF | Administration"
 # admin.site.login_template = 'app/admin.html'
 
 # Register your models here.
