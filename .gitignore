@@ -60,6 +60,7 @@ coverage.xml
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+migrations/
 
 # Flask stuff:
 instance/
@@ -104,6 +105,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+env
 env/
 venv/
 ENV/
@@ -124,6 +126,9 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# Dev stuff
+staticfiles/
 
 # Pyre type checker
 .pyre/

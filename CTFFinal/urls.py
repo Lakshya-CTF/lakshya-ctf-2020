@@ -19,36 +19,29 @@ import app.views as views
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import path
+
 
 from django.views.generic import TemplateView
 
-handler404 = 'app.views.handler404'
+handler404 = "app.views.handler404"
+handler500 = "app.views.handler500"
+
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^$',views.index),
-    url(r'^login/',views.teamlogin),
-    url(r'^register/',views.register),
-    url(r'^quest/',views.quest),
-    url(r'^logout/',views.teamlogout),
-    url(r'^leaderboard/',views.leaderboard),
-    url(r'^timer/',views.timer),
-    url(r'^hint/',views.hint),
-    url(r'^uservalidator/',views.validate_username),
-    url(r'^instructions/',views.instructions),
-    #url(r'^secret_page/',views.useragent),
-    url(r'^robots.txt/',TemplateView.as_view(template_name='app/robots.html')),
-    url(r'^flag_robots_file/',TemplateView.as_view(template_name= 'app/flag_robots_file.html')),
-    url(r'^flag-login/',TemplateView.as_view(template_name='app/inspect_login.html')),
-    url(r'^challenge-page/',TemplateView.as_view(template_name='app/page_file.html')),
-    url(r'^challenge-login/',views.cookielogin),
-    url(r'^challenge-login-1/',views.hiddenfield),
-    url(r'^infinite/',TemplateView.as_view(template_name='app/infinite.html')),
-    url(r'^about/',views.about),
-    url(r'^sitemap.xml',TemplateView.as_view(template_name='app/sitemap.xml'))
-
-
+    url(r"^admin/", admin.site.urls),
+    url(r"^$", views.index),
+    url(r"^login/", views.teamlogin),
+    url(r"^register/", views.register),
+    url(r"^quest/", views.quest),
+    url(r"^logout/", views.teamlogout),
+    url(r"^leaderboard/", views.leaderboard),
+    url(r"^timer/", views.timer),
+    url(r"^hint/", views.hint),
+    url(r"^uservalidator/", views.validate_username),
+    url(r"^instructions/", views.instructions),
+    url(r"^about/", views.about),
+    path("machine/<int:id>", views.machine),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
 urlpatterns += staticfiles_urlpatterns()

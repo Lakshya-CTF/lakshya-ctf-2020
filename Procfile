@@ -1,1 +1,1 @@
-web: gunicorn CTFFinal.wsgi
+web: gunicorn CTFFinal.wsgi --log-file -

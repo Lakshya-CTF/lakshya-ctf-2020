@@ -1,3 +1,7 @@
+
+            
+                
+
 var strings = [
     "Initialzing request",
     "Resolving internet address 127.0.0.1",
@@ -60,7 +64,7 @@ var strings = [
     "Loading content",
     "Page rendered",
     "Starting display manager",
-    "WELCOME TO LAKSHYA CTF INC 2020",
+    "WELCOME TO Lakshya CTF 2020!",
     "Initializing..."
   ];
   
@@ -142,6 +146,20 @@ var strings = [
     $(document).scrollTop($(document).height()); 
   }
   
-  addLog();
   
-  
+
+
+
+if (!sessionStorage.getItem('doNotShow') ) {
+
+    addLog();
+    sessionStorage.setItem( 'doNotShow', true );
+} else {
+    
+    var preloader = $('#preloader');
+    $(preloader).fadeOut("slow");
+    $("#main").fadeIn("slow");
+
+}
+
+

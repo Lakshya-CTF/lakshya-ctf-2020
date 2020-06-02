@@ -76,7 +76,7 @@ body {
 
 .solvers {
     color: #36a2eb;
-    font-size: 0.75rem;
+    font-size: 1rem;
 }
 
 .category_web {
@@ -676,4 +676,9 @@ span.fail:after {
 
 #main {
     display: none;
+}
+
+.card.category_machine a:hover{
+    color: white;
+    text-decoration: none;
 }
