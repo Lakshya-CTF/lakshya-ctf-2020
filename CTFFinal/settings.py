@@ -14,6 +14,7 @@ import os
 from django.utils import timezone
 from datetime import datetime, timedelta
 from pytz import all_timezones
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -91,15 +92,7 @@ if MODE == 'development':
 elif MODE == 'production':
 	DATABASES = {
 	
-		"default": {
-			"ENGINE": "django.db.backends.postgresql_psycopg2",
-			"NAME": "postgres",
-			"HOST": "db",
-			"PORT": 5432,
-			"USER": "postgres",
-			"PASSWORD": "postgres"
-
-		},
+		"default": dj_database_url.config(),
 
 		"receipts": {
 			"ENGINE": "django.db.backends.mysql",
@@ -125,8 +118,13 @@ elif MODE == 'production':
 	CACHES = {
     	
     	'default': {
-        	'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        	'LOCATION': 'memcached:11211',
+        	'BACKEND': 'django_bmemcached.memcached.BMemcached',
+        	'LOCATION': os.environ['MEMCACHIER_SERVERS'],
+        	
+        	'OPTIONS': {
+            'username': os.environ['MEMCACHIER_USERNAME'],
+            'password': os.environ['MEMCACHIER_PASSWORD'],
+        	}
     	}
 	}
 # Password validation
