@@ -27,7 +27,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG") == "True"
-
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
@@ -195,8 +194,9 @@ CONSTANCE_ADDITIONAL_FIELDS = {
 }
 
 CONSTANCE_CONFIG = {
-    'START_TIME': (timezone.now(),'Start Time of the Event',datetime),
+    
     'END_TIME': (timezone.now() + timedelta(minutes = 60),'End Time of the Event',datetime),
+    'START_TIME': (timezone.now(),'Start Time of the Event',datetime),
     'TIME_ZONE': ('Asia/Calcutta','Set the Time Zone','timezone_select')
 }
 

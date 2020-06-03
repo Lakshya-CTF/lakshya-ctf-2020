@@ -172,6 +172,8 @@ def quest(request):
 
 	questions = Questions.objects.all().order_by('questionId')
 	machines = Machines.objects.all().order_by('machineId')
+	solved_questions = SolvedQuestions.objects.filter(user = request.user)
+	solved_machines = SolvedMachines.objects.filter(user = request.user)
 
 	if request.method == "POST":
 
@@ -257,7 +259,7 @@ def hint(request):
 
 		hint_id = int(request.POST.get("hintid"))
 		question = Questions.objects.get(questionId=hint_id)
-		taken = TakenQuestionHint.objects.get(question = question, user = request.user)
+		taken = TakenQuestionHint.objects.filter(question = question, user = request.user)
 
 		questionHint = question.questionHint
 		questionPoints = question.questionPoints

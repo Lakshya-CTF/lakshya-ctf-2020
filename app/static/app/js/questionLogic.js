@@ -68,7 +68,7 @@ var clock;
           success: function(result) {
             var selector = "#hint-content";
               $(selector).text(result.hint);
-              $("#points").text(result.points + " Points");
+              $("#points").text("Score: " + result.points);
           }
       });
   }
