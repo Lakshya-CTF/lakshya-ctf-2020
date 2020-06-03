@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, HttpResponse
-from django.views.decorators.gzip import gzip_page
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
@@ -25,7 +24,7 @@ def handler500(request):
 	response.status_code = 500
 	return response
 
-@gzip_page
+
 def teamlogin(request):
 	''' TODO: Do not permit multiple sessions '''
 	
@@ -35,9 +34,9 @@ def teamlogin(request):
 		team = authenticate(username=username, password=password)
 		if team is not None:
 			login(request, team)
-			if not 'time' in request.session:
-				request.session['time'] = timezone.localtime().timestamp()
-				request.session.save()
+			#if not 'time' in request.session:
+			#	request.session['time'] = timezone.localtime().timestamp()
+			#	request.session.save()
 
 			return redirect("/quest")
 
@@ -46,7 +45,7 @@ def teamlogin(request):
 	return render(request, "app/login.html")
 
 
-@gzip_page
+
 def register(request):
 	team = Team()
 	if request.method == "POST":
@@ -76,29 +75,35 @@ def register(request):
 	return render(request, "app/register.html")
 
 
-@gzip_page
+
 def index(request):
 	return render(request, "app/index.html")
 
 
-@gzip_page
+
 def instructions(request):
 	return render(request, "app/instructions.html")
 
 
-@gzip_page
+
 def about(request):
 	return render(request, "app/about.html")
 
-@gzip_page
+
+def waiting(request):
+	return render(request,"app/waiting.html")
+
+
+
+
 @login_required(login_url="/login/")
 def machine(request,id = 1):
 
 	if timezone.localtime().timestamp() < config.START_TIME.timestamp():
-		return render(request, "app/instructions.html")
+		return redirect('/waiting')
 
 	if timezone.localtime().timestamp() > config.END_TIME.timestamp():
-		return render(request,"app/leaderboard.html")
+		return redirect('/leaderboard')
 
 
 
@@ -108,13 +113,13 @@ def machine(request,id = 1):
 	if request.method == "POST":
 		rating = request.POST.get("radio_btn")
 		flag = request.POST.get("flag")
-		solved = SolvedMachines.objects.filter(machine = machine,user=request.user)
+		solved = SolvedMachines.objects.filter(machine = machine,user=request.user)[0]
 
 		if machine.userFlag == flag:
 			if not solved:
 				
 				request.user.points += int((0.4) * machine.machinePoints)
-
+				messages(request,"User flag is correct!")
 				request.user.save()
 				SolvedMachines(machine = machine, user = request.user).save()
 				SolvedTimestamps(username=request.user,points=request.user.points).save()
@@ -122,7 +127,9 @@ def machine(request,id = 1):
 				messages.error(request,"Already solved!")
 
 		elif machine.rootFlag == flag:
+		
 			if isinstance(solved,SolvedMachines):
+				
 				if not solved.root:
 					
 					solved.root = True
@@ -138,7 +145,7 @@ def machine(request,id = 1):
 						machine.hardRating += 1
 
 					request.user.points += int((0.6) * machine.machinePoints)
-
+					messages(request,"Root flag is correct!")
 					request.user.save()
 					machine.save()
 					solved.save()
@@ -153,22 +160,22 @@ def machine(request,id = 1):
 	return render(request,"app/machine.html", {'machine': machine })
 
 def teamlogout(request):
-	request.user.timeRequired = timezone.localtime().timestamp() - request.session.get("time")
-	request.user.save()
+	#request.user.timeRequired = timezone.localtime().timestamp() - request.session.get("time")
+	#request.user.save()
 	logout(request)
 	return redirect("/leaderboard")
 
 
-@gzip_page
+
 @login_required(login_url="/login/")
 @cache_page(60 * 1)
 def quest(request):
 
 	if timezone.localtime().timestamp() < config.START_TIME.timestamp():
-		return render(request,"app/instructions.html")
+		return redirect('/waiting')
 
 	if timezone.localtime().timestamp() > config.END_TIME.timestamp():
-		return render(request,"app/leaderboard.html")
+		return redirect('/leaderboard')
 
 	questions = Questions.objects.all().order_by('questionId')
 	machines = Machines.objects.all().order_by('machineId')
@@ -180,6 +187,7 @@ def quest(request):
 		flag = request.POST.get("flag")
 		flag_id = int(request.POST.get("qid"))
 		rating = request.POST.get("radio_btn")
+		print(rating)
 		question = Questions.objects.get(questionId=flag_id)
 		solved = SolvedQuestions.objects.filter(question=question,user=request.user)
 
@@ -222,10 +230,10 @@ def quest(request):
 	)
 
 
-@gzip_page
+
 @cache_page(60 * 5)
 def leaderboard(request):
-	teams = (Team.objects.all().exclude(timeRequired=0.0).order_by(
+	teams = (Team.objects.all().order_by(
 		"-points", "timeRequired")[:10])
 	leaderboard = list()
 	for rank, team in zip(range(1, len(teams) + 1), teams):
@@ -247,11 +255,15 @@ def timer(request):
 	if request.method == "GET":
 		difference = int(config.END_TIME.timestamp() - timezone.localtime().timestamp())
 		if difference == 0:
-			request.user.timeRequired = timezone.localtime().timestamp() - request.session.get("time")
-			request.user.save()
+			#request.user.timeRequired = timezone.localtime().timestamp() - request.session.get("time")
+			#request.user.save()
 			logout(request)
 		return HttpResponse(difference)
 
+def waiting_time(request):
+	if request.method == "GET":
+		difference = int(config.START_TIME.timestamp() - timezone.localtime().timestamp())
+		return HttpResponse(difference)
 
 @csrf_protect
 def hint(request):

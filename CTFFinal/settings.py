@@ -26,7 +26,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") == "True"
+#DEBUG = os.environ.get("DEBUG") == "True"
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
@@ -34,7 +35,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
 	"constance",
 	"app",
-	"compressor",
+	"storages",
 	"constance.backends.database",
 	"django.contrib.admin",
 	"django.contrib.auth",
@@ -175,12 +176,6 @@ AUTH_USER_MODEL = "app.Team"
 STATIC_URL = "/static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
-]
-COMPRESS_OFFLINE = True
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -200,4 +195,5 @@ CONSTANCE_CONFIG = {
     'TIME_ZONE': ('Asia/Calcutta','Set the Time Zone','timezone_select')
 }
 
-
+DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+DROPBOX_OAUTH2_TOKEN = os.environ.get("DROPBOX_OAUTH2_TOKEN")

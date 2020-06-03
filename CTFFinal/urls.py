@@ -41,6 +41,8 @@ urlpatterns = [
     url(r"^uservalidator/", views.validate_username),
     url(r"^instructions/", views.instructions),
     url(r"^about/", views.about),
+    url(r"^waiting/",views.waiting),
+    url(r"^wait-time/",views.waiting_time),
     path("machine/<int:id>", views.machine),
 ] 
 
