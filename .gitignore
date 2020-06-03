@@ -128,7 +128,6 @@ venv.bak/
 dmypy.json
 
 # Dev stuff
-staticfiles/
 
 # Pyre type checker
 .pyre/
