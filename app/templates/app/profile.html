@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ request.user.username }}</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+        {% load compress %}
+        {% compress css %}
+        <link rel="stylesheet" href="{% static 'app/css/all.css' %}" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/">
+
+        <link rel="stylesheet" href="{% static 'app/css/bootstrap4-neon-glow.min.css' %}">
+
+        <link rel='stylesheet' href="{% static 'app/css/hack.min.css' %}">
+        
+        <link rel="stylesheet" href="{% static 'app/css/main.css' %}">
+
+        {% endcompress %}
+
+        {% compress js %}
+
+         <script src="{% static 'app/js/jquery-3.4.1.min.js' %}" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="></script>
+        <script src="{% static 'app/js/popper.min.js' %}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"></script>
+        <script src="{% static 'app/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"></script>
+        <script src="{% static 'app/js/preloader.js' %}"></script>
+        <script src="{% static 'app/js/moment.min.js' %}"></script>
+        <script src="{% static 'app/js/chart.min.js' %}"></script>
+
+
+        {% endcompress %}
+    
+</head>
+
+<body class="imgloaded">
+    <div class="glitch">
+        <div style="position: fixed;" class="glitch__img"></div>
+        <div style="position: fixed;" class="glitch__img"></div>
+        <div style="position: fixed;" class="glitch__img"></div>
+        <div style="position: fixed;" class="glitch__img"></div>
+        <div style="position: fixed;" class="glitch__img"></div>
+    </div>
+    <div class="navbar-dark text-white">
+        <div class="container">
+            <nav class="navbar px-0 py-0 navbar-expand-lg navbar-dark">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a href="index.html" class="pl-md-0 p-3 text-decoration-none text-light">
+                            <h3 class="bold"><span class="color_danger">LAKSHYA</span><span class="color_white">CTF</span></h3>
+                        </a>
+                    </div>
+                    <div class="navbar-nav ml-auto">
+                        <a href="/" class="p-3 text-decoration-none text-light bold">Home</a>
+                        <a href="/about" class="p-3 text-decoration-none text-light bold">About</a>
+                        <a href="/leaderboard" class="p-3 text-decoration-none text-light bold">Leaderboard</a>
+                        <a href="/quest" class="p-3 text-decoration-none text-light bold">Challenges</a>
+                        <a href="/logout" class="p-3 text-decoration-none text-light bold">Logout</a>
+                    </div>
+                </div>
+            </nav>
+
+        </div>
+    </div>
+
+    <div class="jumbotron bg-transparent mb-0 pt-3 radius-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="row justify-content-center p-3">
+                            <div class="col-md-3">
+                                <div class="row justify-content-center">
+                                    <!-- @ToDo : if user has an image then display here else keep the default image -->
+                                    <div class="profile-img" title="click to change">
+                                        <img id="profileImage"  src="images/bg.jpg" />
+                                        <div class="hover-top">
+                                            <div class="hover-text">
+                                                Click to Update
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input style="display: none;" id="imageUpload" type="file" name="profile_photo" placeholder="Photo" required="" capture>
+                                <h2 class="normalFont text-center mt-3">John Doe</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row" style="height:100%">
+                                    <div class="col-md-3 text-center align-self-center">
+                                        <h3 class="jumboNum">{{ request.user.points }}</h3>
+                                        <h5 style="color:#9acc14">Points</h5>
+                                    </div>
+                                    <div class="col-md-3 text-center align-self-center">
+                                        <h3 class="jumboNum"></h3>
+                                        <h5 style="color:#56c0e0">System Owns</h5>
+                                    </div>
+                                    <div class="col-md-3 text-center align-self-center">
+                                        <h3 class="jumboNum">24</h3>
+                                        <h5 style="color:#56c0e0">User Owns</h5>
+                                    </div>
+                                    <div class="col-md-3 text-center align-self-center">
+                                        <h3 class="jumboNum">#1</h3>
+                                        <h5 style="color:#d73e36">Rank</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-5">
+                        <div class="col-md-6">
+                            <div class="row justify-content-center">
+                                <h4 class="mb-5">{{ Player Name }}'s Stats:</h4>
+                                <div class="col-xl-10">
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                            </div>
+                        </div>               
+                        <div class="col-md-6">
+                            <h4 class="mb-5">Challenges Solved:</h4>
+                            <div class="col-xl-12">
+                                <canvas id="chart"></canvas>
+                            </div>
+                        </div>
+                        <!-- @ToDo : check if user's own profile => do nothing; else do not show the below div -->
+                        <div class="col-md-12 mt-5">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Machine Access Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="access-details" style="width: 100%;">
+                                        <tr>
+                                            <td>Server</td>
+                                            <td>afj.asdfjlksdf</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Port</td>
+                                            <td>1337</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Server Status</td>
+                                            <!-- color #9acc14 / d73e36  -->
+                                            <!-- color green  /  red  -->
+                                            <td style="color:#9acc14">Connected</td>
+                                        </tr>
+                                        <tr>
+                                            <td>IPV4</td>
+                                            <td>10.01.10.1</td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="btn btn-outline-success btn-shadow px-3 my-2 ml-0 ml-sm-1 text-left">Connection Pack</button></td>
+                                            <td><button class="btn btn-outline-danger btn-shadow px-3 my-2 ml-0 ml-sm-1 text-left">Regenerate</button></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <h1 class="display-1 bold color_white content__title text-center"><span class="color_danger">PROFILE</span><span class="vim-caret">&nbsp;</span></h1> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+  
+    <script>
+            // @ToDo : upload uploader.files[0] in our storage
+        // photo upload script
+        $("#profileImage").click(function(e) {
+            $("#imageUpload").click();
+        });
+
+        $(".hover-top").click(function(e) {
+            $("#imageUpload").click();
+        });
+
+        function fasterPreview( uploader ) {
+            if ( uploader.files && uploader.files[0] ){ 
+                $('#profileImage').attr('src', window.URL.createObjectURL(uploader.files[0]) );
+                // @ToDo : upload uploader.files[0] in our storage ( can use ajax )
+            }
+        }
+
+        $("#imageUpload").change(function(){
+            fasterPreview( this );
+        });
+
+        var s1 = {
+            // @ToDo : Change the label to player's name
+            label: 'JohnDoe',
+            borderColor: '#56c0e0',
+            steppedLine: false,
+            data: [{
+                x: '2017-01-06 00:00:00',
+                y: 00
+            }, {
+                x: '2017-01-06 00:07:00',
+                y: 100
+            }, {
+                x: '2017-01-06 00:15:40',
+                y: 300
+            }, {
+                x: '2017-01-06 00:18:10',
+                y: 260
+            }, {
+                x: '2017-01-06 00:20:40',
+                y: 350
+            }, {
+                x: '2017-01-06 00:30:20',
+                y: 400
+            }, {
+                x: '2017-01-06 00:40:10',
+                y: 550
+            }, ]
+        };
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [s1]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        type: 'linear'
+                    }],
+                    xAxes: [{
+                        type: 'time',
+                        distribution: 'series', // or linear
+                        time: {
+                            unit: 'minute',
+                            displayFormats: {
+                                minute: 'mm:ss'
+                            },
+                            tooltipFormat: 'mm:ss'
+                        }
+                    }]
+                },
+                legend: {
+                        display: false,
+                    },
+            }
+        });
+
+
+        var barChartData = {
+			labels: ['Web', 'Reversing', 'Steganography', 'Pwning', 'Cryptography', 'Other', 'Machines'],
+			datasets: [{
+				label: 'Percent solved',
+				// backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+				// borderColor: window.chartColors.red,
+				borderWidth: 1,
+				data: [4,
+				2,
+				3,
+				4,
+				5,
+				6,
+				5
+				],
+				backgroundColor: [
+					'#ef121b94',
+					'#17b06b94',
+					'#f9751594',
+					'#00a09994',
+					'#9966FF94',
+					'#ffce5694',
+					'#0f329894'
+				]
+			}]
+
+        };
+        
+        var ctx2 = document.getElementById('chart').getContext('2d');
+        window.myBar = new Chart(ctx2, {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                responsive: true,
+                legend: {
+                        display: false
+					},
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            offsetGridLines: true
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

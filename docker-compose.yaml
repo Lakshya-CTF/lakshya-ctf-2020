@@ -1,0 +1,28 @@
+version: '2.0'
+services:
+  memcached:
+    image: "memcached:alpine"
+    ports:
+      - "11211:11211"
+  db:
+    image: "postgres:13-alpine"
+    environment: 
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+  web:
+    env_file: env
+    environment:
+      - DEBUG=False
+      - MODE=production
+    build: .
+    restart: always
+    ports: 
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - memcached

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import dj_database_url
 from django.utils import timezone
 from datetime import datetime, timedelta
 from pytz import all_timezones
@@ -25,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") == "True"
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -78,7 +79,7 @@ WSGI_APPLICATION = "CTFFinal.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-MODE = os.environ.get("MODE")
+MODE = 'development'
 
 if MODE == 'development':
 	DATABASES = {
@@ -90,16 +91,7 @@ if MODE == 'development':
 
 elif MODE == 'production':
 	DATABASES = {
-	
-		"default": {
-			"ENGINE": "django.db.backends.postgresql_psycopg2",
-			"NAME": "postgres",
-			"HOST": "db",
-			"PORT": 5432,
-			"USER": "postgres",
-			"PASSWORD": "postgres"
-
-		},
+		"default": dj_database_url.config(conn_max_age=500),
 
 		"receipts": {
 			"ENGINE": "django.db.backends.mysql",
@@ -125,8 +117,12 @@ elif MODE == 'production':
 	CACHES = {
     	
     	'default': {
-        	'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        	'LOCATION': 'memcached:11211',
+        	'BACKEND': 'django_bmemcached.memcached.BMemcached',
+        	'LOCATION': os.environ.get("MEMCACHIER_SERVERS"),
+        	'OPTIONS':{
+        		'username': os.environ.get("MEMCACHIER_USERNAME"),
+        		'password': os.environ.get("MEMCACHIER_PASSWORD")
+    		}
     	}
 	}
 # Password validation
