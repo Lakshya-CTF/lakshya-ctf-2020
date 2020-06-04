@@ -197,7 +197,7 @@
                  {% for challenge in challenges %} 
 
 
-                    function getBarChartData() {
+                    function getBarChartData_question_{{challenge.questionId}}() {
                         return barChartData = {
                             labels: ['Easy','Medium', 'Hard'],
                             datasets: [{
@@ -215,10 +215,10 @@
                         };
                     }
 
-                  var ctx = document.getElementById('problem_id_question' + '{{challenge.questionId}}' + '_chart').getContext('2d');
-                    window.myBar = new Chart(ctx, {
+                  var ctx_question_{{challenge.questionId}} = document.getElementById('problem_id_question' + '{{challenge.questionId}}' + '_chart').getContext('2d');
+                    window.myBar = new Chart(ctx_question_{{challenge.questionId}}, {
                         type: 'bar',
-                        data: getBarChartData(),
+                        data: getBarChartData_question_{{challenge.questionId}}(),
                         options: {
                             tooltips: {
                                 enabled: false,
@@ -247,7 +247,7 @@
                 {% for machine in machines %} 
 
 
-                    function getBarChartData() {
+                    function getBarChartData_machine_{{machine.machineId}}() {
                         return barChartData = {
                             labels: ['Easy','Medium', 'Hard'],
                             datasets: [{
@@ -265,10 +265,10 @@
                         };
                     }
 
-                  var ctx = document.getElementById('problem_id_machine' + '{{machine.machineId}}' + '_chart').getContext('2d');
-                    window.myBar = new Chart(ctx, {
+                  var ctx_machine_{{machine.machineId }} = document.getElementById('problem_id_machine' + '{{machine.machineId}}' + '_chart').getContext('2d');
+                    window.myBar = new Chart(ctx_machine_{{machine.machineId }}, {
                         type: 'bar',
-                        data: getBarChartData(),
+                        data: getBarChartData_machine_{{machine.machineId}}(),
                         options: {
                             tooltips: {
                                 enabled: false,
