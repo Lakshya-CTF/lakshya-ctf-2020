@@ -121,7 +121,7 @@ def machine(request,id = 1):
 			if not solved:
 				
 				request.user.points += int((0.4) * machine.machinePoints)
-				request.user.lastSubmission = timezone.now
+				request.user.lastSubmission = timezone.now()
 				messages(request,"User flag is correct!")
 				request.user.save()
 				SolvedMachines(machine = machine, user = request.user).save()
@@ -148,7 +148,7 @@ def machine(request,id = 1):
 						machine.hardRating += 1
 
 					request.user.points += int((0.6) * machine.machinePoints)
-					request.user.lastSubmission = timezone.now
+					request.user.lastSubmission = timezone.now()
 					messages(request,"Root flag is correct!")
 					request.user.save()
 					machine.save()
@@ -198,7 +198,7 @@ def quest(request):
 			if not solved:
 
 				request.user.points += question.questionPoints
-				request.user.lastSubmission = timezone.now
+				request.user.lastSubmission = timezone.now()
 				
 				question.questionSolvers += 1
 
