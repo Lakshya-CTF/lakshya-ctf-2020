@@ -12,7 +12,7 @@ import CTFFinal.settings as settings
 from django.utils import timezone
 from constance import config
 from django.views.decorators.cache import cache_page
-
+from django.db.models.query import QuerySet
 
 def handler404(request, exception, *args, **kwargs):
 	response = render(None,"404.html")
@@ -115,7 +115,7 @@ def machine(request,id = 1):
 	if request.method == "POST":
 		rating = request.POST.get("radio_btn")
 		flag = request.POST.get("flag")
-		solved = SolvedMachines.objects.filter(machine = machine,user=request.user)[0]
+		solved = SolvedMachines.objects.filter(machine = machine,user=request.user)
 
 		if machine.userFlag == flag:
 			if not solved:
@@ -130,12 +130,12 @@ def machine(request,id = 1):
 				messages.error(request,"Already solved!")
 
 		elif machine.rootFlag == flag:
-		
-			if isinstance(solved,SolvedMachines):
+			
+			if isinstance(solved,QuerySet):
 				
-				if not solved.root:
+				if not solved[0].root:
 					
-					solved.root = True
+					solved[0].root = True
 					machine.machineSolvers += 1
 
 					if rating == "EA":
