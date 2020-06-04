@@ -90,6 +90,7 @@ if MODE == 'development':
 	}
 
 elif MODE == 'production':
+	SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 	DATABASES = {
 	
 		"default": dj_database_url.config(),
@@ -174,10 +175,11 @@ MEDIA_URL = "downloads/"
 AUTH_USER_MODEL = "app.Team"
 
 STATIC_URL = "/static/"
-
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+#STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
@@ -197,3 +199,13 @@ CONSTANCE_CONFIG = {
 
 DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 DROPBOX_OAUTH2_TOKEN = os.environ.get("DROPBOX_OAUTH2_TOKEN")
+
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_SSL_REDIRECT = False
+SECURE_HSTS_SECONDS = 43200
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_REFERRER_POLICY = 'same-origin'

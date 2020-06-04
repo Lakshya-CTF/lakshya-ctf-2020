@@ -79,6 +79,22 @@ body {
     font-size: 1rem;
 }
 
+.solver_num {
+    color: white;
+}
+
+.machine .solvers {
+    font-size: 1rem!important;
+}
+
+.machine_page .solvers {
+    font-size: 1.25rem!important;
+}
+
+.ip {
+    padding-right: 20px;
+}
+
 .category_web {
     border-top: 4px solid #ef121b94;
 }
@@ -92,7 +108,16 @@ body {
 }
 
 .category_pwning {
-    border-top: 4px solid #36a2eb94;
+    border-top: 4px solid #00a09994;
+}
+
+.category_machine {
+    border-top: 4px solid #0f329894;
+}
+
+.category_machine a:hover {
+    text-decoration: none;
+    color: inherit;
 }
 
 .category_misc {
@@ -122,6 +147,57 @@ body {
 h1,
 h2 {
     font-family: 'PhelixBoomgartner'!important;
+}
+
+.normalFont{
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+}
+
+.jumboNum{
+    font-size: 50px;
+}
+
+.profile-img{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius:50%;
+    height: 150px;
+    width:150px;
+}
+
+.profile-img .hover-top{
+    opacity: 0;
+    /* transition: none !important; */
+    cursor: pointer;
+}
+
+.profile-img .hover-top:hover{
+    opacity: 1;
+}
+
+.profile-img .hover-text{
+    text-align: center;
+	font-size: 18px;
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-moz-transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.profile-img .hover-text:hover{
+	display: inline-block;
+}
+
+.profile-img img{
+    min-height: 100%;
+    height: 150px;
 }
 
 button.typewriter {
@@ -233,6 +309,11 @@ button.typewriter {
     100% {
         width: 100%;
     }
+}
+
+.access-details td{
+    height: 40px;
+    border-bottom: 1px solid #c2c2c23A;
 }
 
 .content__title {
@@ -677,8 +758,6 @@ span.fail:after {
 #main {
     display: none;
 }
-
-.card.category_machine a:hover{
-    color: white;
-    text-decoration: none;
+html {
+  scroll-behavior: smooth;
 }
