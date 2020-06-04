@@ -6,7 +6,7 @@ python-memcached==1.59
 django-constance[database]
 whitenoise==5.1.0
 mysqlclient==1.4.6
-
+django-storages[dropbox]
 # Heroku
 django-bmemcached==0.3.0
 dj-database-url==0.5.0
