@@ -72,7 +72,7 @@
                                     <th>#</th>
                                     <th>Team Name</th>
                                     <th>Points</th>
-                                    <th>Time Taken</th>
+                                    <th>Last Submission</th>
                                 </tr>
                             </thead>
                             {% for rank,team in leaderboard %}
@@ -139,9 +139,9 @@
         time: {
         unit: 'minute',
         displayFormats: {
-        minute: 'mm:ss'
+        minute: 'hh:mm:ss'
         },
-        tooltipFormat: 'mm:ss'
+        tooltipFormat: 'hh:mm:ss'
         }
         }]
         }

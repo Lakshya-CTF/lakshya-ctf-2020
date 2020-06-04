@@ -26,7 +26,9 @@ def handler500(request):
 
 
 def teamlogin(request):
-	''' TODO: Do not permit multiple sessions '''
+
+	if request.user.is_authenticated:
+		return redirect("/quest")
 	
 	if request.method == "POST":
 		username = request.POST.get("teamname")
@@ -119,6 +121,7 @@ def machine(request,id = 1):
 			if not solved:
 				
 				request.user.points += int((0.4) * machine.machinePoints)
+				request.user.lastSubmission = timezone.now
 				messages(request,"User flag is correct!")
 				request.user.save()
 				SolvedMachines(machine = machine, user = request.user).save()
@@ -145,6 +148,7 @@ def machine(request,id = 1):
 						machine.hardRating += 1
 
 					request.user.points += int((0.6) * machine.machinePoints)
+					request.user.lastSubmission = timezone.now
 					messages(request,"Root flag is correct!")
 					request.user.save()
 					machine.save()
@@ -187,7 +191,6 @@ def quest(request):
 		flag = request.POST.get("flag")
 		flag_id = int(request.POST.get("qid"))
 		rating = request.POST.get("radio_btn")
-		print(rating)
 		question = Questions.objects.get(questionId=flag_id)
 		solved = SolvedQuestions.objects.filter(question=question,user=request.user)
 
@@ -195,6 +198,7 @@ def quest(request):
 			if not solved:
 
 				request.user.points += question.questionPoints
+				request.user.lastSubmission = timezone.now
 				
 				question.questionSolvers += 1
 
@@ -208,7 +212,7 @@ def quest(request):
 					question.hardRating += 1
 
 				messages.success(request, "Flag is correct!")
-				 
+				
 				question.save()
 				request.user.save()
 				SolvedQuestions(question = question, user = request.user).save()
@@ -234,7 +238,7 @@ def quest(request):
 @cache_page(60 * 5)
 def leaderboard(request):
 	teams = (Team.objects.all().order_by(
-		"-points", "timeRequired")[:10])
+		"-points", "lastSubmission")[:10])
 	leaderboard = list()
 	for rank, team in zip(range(1, len(teams) + 1), teams):
 		leaderboard.append((rank, team))

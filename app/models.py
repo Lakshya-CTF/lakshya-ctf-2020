@@ -4,6 +4,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib import admin
 #from import_export.admin import ImportExportActionModelAdmin
 from django.utils import timezone
+from datetime import timedelta
+from constance import config
 
 # Create your models here. Use set_password
 EASY = "EA"
@@ -18,10 +20,10 @@ class Team(AbstractUser):
 
     points = models.IntegerField(default=0)
     timeRequired = models.FloatField(default=0)
+    lastSubmission = models.DateTimeField(default=timezone.now)
 
     def convert(self):
-        return "{}:{}".format(int(self.timeRequired // 60),
-                              int(self.timeRequired % 60))
+        return f"{self.lastSubmission.day}-{self.lastSubmission.month}-{self.lastSubmission.year} {self.lastSubmission.hour}:{self.lastSubmission.minute}:{self.lastSubmission.second}"
 
     def __str__(self):
         return self.username
