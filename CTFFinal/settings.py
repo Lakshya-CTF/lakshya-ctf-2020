@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = os.environ.get("DEBUG") == "True"
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
@@ -176,8 +176,7 @@ AUTH_USER_MODEL = "app.Team"
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-#STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
-
+STATICFILES_STORAGE = 'app.storage.ForgivingManifestStaticFilesStorage'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
