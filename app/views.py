@@ -122,7 +122,7 @@ def machine(request,id = 1):
 				
 				request.user.points += int((0.4) * machine.machinePoints)
 				request.user.lastSubmission = timezone.now()
-				messages(request,"User flag is correct!")
+				messages.success(request,"User flag is correct!")
 				request.user.save()
 				SolvedMachines(machine = machine, user = request.user).save()
 				SolvedTimestamps(username=request.user,points=request.user.points).save()
@@ -149,7 +149,7 @@ def machine(request,id = 1):
 
 					request.user.points += int((0.6) * machine.machinePoints)
 					request.user.lastSubmission = timezone.now()
-					messages(request,"Root flag is correct!")
+					messages.success(request,"Root flag is correct!")
 					request.user.save()
 					machine.save()
 					solved.save()
