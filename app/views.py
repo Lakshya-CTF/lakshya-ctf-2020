@@ -49,7 +49,7 @@ def teamlogin(request):
 
 
 def register(request):
-	
+
 	team = Team()
 	if request.method == "POST":
 
@@ -111,10 +111,7 @@ def machine(request,id = 1):
 	if timezone.localtime().timestamp() > config.END_TIME.timestamp():
 		return redirect('/leaderboard')
 
-
-
 	machine = Machines.objects.get(machineId = id)
-
 	
 	if request.method == "POST":
 		rating = request.POST.get("radio_btn")
@@ -223,6 +220,8 @@ def quest(request):
 				request.user.save()
 				SolvedQuestions(question = question, user = request.user).save()
 				SolvedTimestamps(username = request.user,points = request.user.points).save()
+
+				solved_question_ids.append(question.questionId)
 			else:
 				messages.error(request, "Already solved!")
 		else:
@@ -264,12 +263,10 @@ def leaderboard(request):
 
 @login_required(login_url="/login/")
 def timer(request):
-	''' TODO: Logout from backend '''
+	
 	if request.method == "GET":
 		difference = int(config.END_TIME.timestamp() - timezone.localtime().timestamp())
 		if difference == 0:
-			#request.user.timeRequired = timezone.localtime().timestamp() - request.session.get("time")
-			#request.user.save()
 			logout(request)
 		return HttpResponse(difference)
 
