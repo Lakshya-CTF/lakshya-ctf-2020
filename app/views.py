@@ -133,10 +133,10 @@ def machine(request,id = 1):
 		elif machine.rootFlag == flag:
 			
 			if isinstance(solved,QuerySet):
-				
-				if not solved[0].root:
+				m = solved[0]
+				if not m.root:
 					
-					solved[0].root = True
+					m.root = True
 					machine.machineSolvers += 1
 
 					if rating == "EA":
@@ -153,7 +153,7 @@ def machine(request,id = 1):
 					messages.success(request,"Root flag is correct!")
 					request.user.save()
 					machine.save()
-					solved[0].save()
+					m.save()
 					SolvedTimestamps(username=request.user,points=request.user.points).save()
 				else:
 					messages.error(request,"Already solved!")
