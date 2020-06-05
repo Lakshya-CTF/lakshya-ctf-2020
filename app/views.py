@@ -175,7 +175,6 @@ def teamlogout(request):
 
 
 @login_required(login_url="/login/")
-@cache_page(60 * 1)
 def quest(request):
 
 	if timezone.localtime().timestamp() < config.START_TIME.timestamp():
@@ -244,7 +243,7 @@ def quest(request):
 
 
 
-@cache_page(60 * 5)
+
 def leaderboard(request):
 	teams = (Team.objects.all().order_by(
 		"-points", "lastSubmission")[:10])
