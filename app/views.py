@@ -49,6 +49,7 @@ def teamlogin(request):
 
 
 def register(request):
+	''' TODO:Store email from events table'''
 	team = Team()
 	if request.method == "POST":
 
@@ -154,7 +155,7 @@ def machine(request,id = 1):
 					messages.success(request,"Root flag is correct!")
 					request.user.save()
 					machine.save()
-					solved.save()
+					solved[0].save()
 					SolvedTimestamps(username=request.user,points=request.user.points).save()
 				else:
 					messages.error(request,"Already solved!")
