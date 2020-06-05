@@ -437,7 +437,7 @@ button.typewriter {
     left: calc(-1 * var(--gap-horizontal));
     width: calc(100% + var(--gap-horizontal) * 2);
     height: calc(100% + var(--gap-vertical) * 2);
-    background: url(../images/bg.png);
+    background: url(../images/bg.webp);
     transform: translate3d(0, 0, 0);
     background-blend-mode: var(--blend-mode-1);
     background-position: right;

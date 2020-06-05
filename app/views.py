@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse,get_object_or_404
+
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
@@ -13,6 +14,7 @@ from django.utils import timezone
 from constance import config
 from django.views.decorators.cache import cache_page
 from django.db.models.query import QuerySet
+
 
 def handler404(request, exception, *args, **kwargs):
 	response = render(None,"404.html")
@@ -80,7 +82,24 @@ def register(request):
 
 
 def profile(request,username):
-	return render(request,"app/profile.html")
+	user = get_object_or_404(Team,username = username)
+	rank = Team.objects.filter(points__gt = user.points,lastSubmission__gt = user.lastSubmission).count()
+
+	if rank == 0:
+		rank = 1
+	user_owns = SolvedMachines.objects.filter(user = user,root=False).count()
+	root_owns = SolvedMachines.objects.filter(user = user,root=True).count()
+	timestamps = SolvedTimestamps.objects.filter(username = user)
+	vals = SolvedQuestions.objects.filter(user = user)
+
+	stats_dict = {"web":0,"reversing":0 ,"steg":0 ,"pwning":0,"crypt":0,"misc":0,"machines":root_owns}
+
+	for val in vals:
+		stats_dict[val.question.questionType] += 1
+
+	stats = list(stats_dict.values())
+
+	return render(request,"app/profile.html",{"user":user,"user_owns":user_owns,"root_owns":root_owns,"timestamps":timestamps,"stats":stats,"rank":rank})
 
 def index(request):
 	return render(request, "app/index.html")

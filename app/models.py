@@ -19,8 +19,8 @@ QUESTION_CATEGORY = (("web", "Web"), ("reversing", "Reversing"), ("steg", "Stega
 class Team(AbstractUser):
 
     points = models.IntegerField(default=0)
-    timeRequired = models.FloatField(default=0)
-    lastSubmission = models.DateTimeField(default=timezone.now)
+    timeRequired = models.FloatField(default=0,verbose_name="Time required")
+    lastSubmission = models.DateTimeField(default=timezone.now,verbose_name="Last submission")
 
     def convert(self):
         return f"{self.lastSubmission.day}-{self.lastSubmission.month}-{self.lastSubmission.year} {self.lastSubmission.hour}:{self.lastSubmission.minute}:{self.lastSubmission.second}"
@@ -45,13 +45,13 @@ class Questions(models.Model):
     questionData = models.FileField(blank=True,verbose_name = "Data")
     questionFlag = models.CharField(max_length=50,
                                     default="lakshya_CTF{hack_me_now}")
-    questionHint = models.TextField(default="Sample Hint",verbose_name = "Flag")
+    questionHint = models.TextField(default="Sample hint",verbose_name = "Flag")
     questionSolvers = models.IntegerField(default=0,verbose_name = "Solvers")
     questionType = models.CharField(max_length = 15,choices = QUESTION_CATEGORY, default = "web",verbose_name = "Category")
 
-    easyRating = models.IntegerField(default = 0,verbose_name = "Easy Raters")
-    mediumRating = models.IntegerField(default = 0,verbose_name = "Medium Raters")
-    hardRating = models.IntegerField(default = 0,verbose_name = "Hard Raters")
+    easyRating = models.IntegerField(default = 0,verbose_name = "Easy raters")
+    mediumRating = models.IntegerField(default = 0,verbose_name = "Medium raters")
+    hardRating = models.IntegerField(default = 0,verbose_name = "Hard raters")
 
 
     def __str__(self):
@@ -69,15 +69,15 @@ class Machines(models.Model):
     machineIp = models.CharField(max_length=20,verbose_name = "IP Address")
     machinePoints = models.IntegerField(default=0,verbose_name = "Points")
     machineSolvers = models.IntegerField(default = 0,verbose_name = "Solvers")
-    enumeration = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True,verbose_name = "Enumeration Rating")
-    ctf_like = models.IntegerField(choices = zip(range(1,6), range(1,6)),blank=True,verbose_name="CTF-Like Rating")
-    custom_exploitation = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True,verbose_name = "Custom Exploitation Rating")
-    real_life = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True,verbose_name = "Real Life Rating")
-    cve = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True, verbose_name = "CVE Rating")
+    enumeration = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True,verbose_name = "Enumeration rating")
+    ctf_like = models.IntegerField(choices = zip(range(1,6), range(1,6)),blank=True,verbose_name="CTF-Like rating")
+    custom_exploitation = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True,verbose_name = "Custom exploitation Rating")
+    real_life = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True,verbose_name = "Real-life rating")
+    cve = models.IntegerField(choices = zip(range(1,6), range(1,6)), blank=True, verbose_name = "CVE rating")
 
-    easyRating = models.IntegerField(default = 0,verbose_name = "Easy Raters")
-    mediumRating = models.IntegerField(default = 0,verbose_name = "Medium Raters")
-    hardRating = models.IntegerField(default = 0,verbose_name = "Hard Raters")
+    easyRating = models.IntegerField(default = 0,verbose_name = "Easy raters")
+    mediumRating = models.IntegerField(default = 0,verbose_name = "Medium raters")
+    hardRating = models.IntegerField(default = 0,verbose_name = "Hard raters")
     
     userFlag = models.CharField(max_length=50,default="lakshya_CTF{hack_me_now}")
     rootFlag = models.CharField(max_length=50,default="lakshya_CTF{hack_me_now}")

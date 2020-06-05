@@ -5,8 +5,13 @@
     <!-- Required meta tags -->
     {% load static %}
     <meta charset="utf-8">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'app/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'app/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'app/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'app/favicon/site.webmanifest' %}">
+        
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ request.user.username }}</title>
+    <title>{{ user.username }}</title>
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
@@ -69,7 +74,7 @@
                                 <div class="row justify-content-center">
                                     <!-- @ToDo : if user has an image then display here else keep the default image -->
                                     <div class="profile-img" title="click to change">
-                                        <img id="profileImage"  src="images/bg.jpg" />
+                                        <img id="profileImage"  src="{% static 'app/images/bg.jpg' %}" />
                                         <div class="hover-top">
                                             <div class="hover-text">
                                                 Click to Update
@@ -77,25 +82,25 @@
                                         </div>
                                     </div>
                                     <input style="display: none;" id="imageUpload" type="file" name="profile_photo" placeholder="Photo" required="" capture>
-                                <h2 class="normalFont text-center mt-3">John Doe</h2>
+                                <h5 class="normalFont text-center mt-3">{{user.first_name}}&nbsp;{{user.last_name}}</h5>
                                 </div>
                             </div>
                             <div class="col-md-9">
                                 <div class="row" style="height:100%">
                                     <div class="col-md-3 text-center align-self-center">
-                                        <h3 class="jumboNum">{{ request.user.points }}</h3>
+                                        <h3 class="jumboNum">{{ user.points }}</h3>
                                         <h5 style="color:#9acc14">Points</h5>
                                     </div>
                                     <div class="col-md-3 text-center align-self-center">
-                                        <h3 class="jumboNum"></h3>
-                                        <h5 style="color:#56c0e0">System Owns</h5>
-                                    </div>
-                                    <div class="col-md-3 text-center align-self-center">
-                                        <h3 class="jumboNum">24</h3>
+                                        <h3 class="jumboNum">{{ user_owns }}</h3>
                                         <h5 style="color:#56c0e0">User Owns</h5>
                                     </div>
                                     <div class="col-md-3 text-center align-self-center">
-                                        <h3 class="jumboNum">#1</h3>
+                                        <h3 class="jumboNum">{{ root_owns }}</h3>
+                                        <h5 style="color:#56c0e0">Root Owns</h5>
+                                    </div>
+                                    <div class="col-md-3 text-center align-self-center">
+                                        <h3 class="jumboNum">{{ rank }}</h3>
                                         <h5 style="color:#d73e36">Rank</h5>
                                     </div>
                                 </div>
@@ -105,7 +110,7 @@
                     <div class="row my-5">
                         <div class="col-md-6">
                             <div class="row justify-content-center">
-                                <h4 class="mb-5"> Player Name's Stats:</h4>
+                                <h4 class="mb-5"> {{user.username}}'s Stats:</h4>
                                 <div class="col-xl-10">
                                     <canvas id="myChart"></canvas>
                                 </div>
@@ -118,6 +123,7 @@
                             </div>
                         </div>
                         <!-- @ToDo : check if user's own profile => do nothing; else do not show the below div -->
+                        {% if request.user.is_authenticated %}
                         <div class="col-md-12 mt-5">
                             <div class="card">
                                 <div class="card-header">
@@ -151,6 +157,7 @@
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                     <!-- <h1 class="display-1 bold color_white content__title text-center"><span class="color_danger">PROFILE</span><span class="vim-caret">&nbsp;</span></h1> -->
                 </div>
@@ -192,33 +199,19 @@
             fasterPreview( this );
         });
 
+        var values = [];
+
+        {% for timestamp in timestamps %}
+         values.push({x: '{{timestamp.convert}}', y: {{timestamp.points}} });
+
+        {% endfor %}
+
         var s1 = {
             // @ToDo : Change the label to player's name
-            label: 'JohnDoe',
+            label: '{{ user.username }}',
             borderColor: '#56c0e0',
             steppedLine: false,
-            data: [{
-                x: '2017-01-06 00:00:00',
-                y: 00
-            }, {
-                x: '2017-01-06 00:07:00',
-                y: 100
-            }, {
-                x: '2017-01-06 00:15:40',
-                y: 300
-            }, {
-                x: '2017-01-06 00:18:10',
-                y: 260
-            }, {
-                x: '2017-01-06 00:20:40',
-                y: 350
-            }, {
-                x: '2017-01-06 00:30:20',
-                y: 400
-            }, {
-                x: '2017-01-06 00:40:10',
-                y: 550
-            }, ]
+            data: values
         };
 
         var ctx = document.getElementById('myChart').getContext('2d');
@@ -238,9 +231,9 @@
                         time: {
                             unit: 'minute',
                             displayFormats: {
-                                minute: 'mm:ss'
+                                minute: 'hh:mm:ss'
                             },
-                            tooltipFormat: 'mm:ss'
+                            tooltipFormat: 'hh:mm:ss'
                         }
                     }]
                 },
@@ -249,8 +242,10 @@
                     },
             }
         });
-
-
+        var stats = [];
+        {% for value in stats %}
+            stats.push({{value}});
+        {% endfor %}
         var barChartData = {
 			labels: ['Web', 'Reversing', 'Steganography', 'Pwning', 'Cryptography', 'Other', 'Machines'],
 			datasets: [{
@@ -258,14 +253,7 @@
 				// backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
 				// borderColor: window.chartColors.red,
 				borderWidth: 1,
-				data: [4,
-				2,
-				3,
-				4,
-				5,
-				6,
-				5
-				],
+				data: stats,
 				backgroundColor: [
 					'#ef121b94',
 					'#17b06b94',
