@@ -209,3 +209,8 @@ if MODE == 'production':
 	SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 	SECURE_HSTS_PRELOAD = True
 	SECURE_REFERRER_POLICY = 'same-origin'
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+

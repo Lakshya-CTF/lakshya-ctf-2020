@@ -77,6 +77,8 @@ def register(request):
 	return render(request, "app/register.html")
 
 
+def profile(request,username):
+	return render(request,"app/profile.html")
 
 def index(request):
 	return render(request, "app/index.html")
@@ -185,6 +187,8 @@ def quest(request):
 	machines = Machines.objects.all().order_by('machineId')
 	solved_questions = SolvedQuestions.objects.filter(user = request.user)
 	solved_machines = SolvedMachines.objects.filter(user = request.user)
+	solved_question_ids = [entry.question.questionId for entry in solved_questions]
+	solved_machine_ids = [entry.machine.machineId for entry in solved_machines]
 
 	if request.method == "POST":
 
@@ -193,6 +197,7 @@ def quest(request):
 		rating = request.POST.get("radio_btn")
 		question = Questions.objects.get(questionId=flag_id)
 		solved = SolvedQuestions.objects.filter(question=question,user=request.user)
+
 
 		if flag == question.questionFlag:
 			if not solved:
@@ -230,6 +235,9 @@ def quest(request):
 			"num_challenges": len(questions),
 			"total_count": len(questions) + len(machines),
 			"machines": machines,
+			"solved_question_ids": solved_question_ids,
+			"solved_machine_ids": solved_machine_ids
+
 		},
 	)
 

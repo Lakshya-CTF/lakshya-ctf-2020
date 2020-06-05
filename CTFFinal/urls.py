@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
-
+from django.contrib.auth import views as auth_views
 
 from django.views.generic import TemplateView
 
@@ -38,11 +38,17 @@ urlpatterns = [
     url(r"^leaderboard/", views.leaderboard),
     url(r"^timer/", views.timer),
     url(r"^hint/", views.hint),
+    path("user/<str:username>",views.profile),
     url(r"^uservalidator/", views.validate_username),
     url(r"^instructions/", views.instructions),
     url(r"^about/", views.about),
     url(r"^waiting/",views.waiting),
     url(r"^wait-time/",views.waiting_time),
+    url(r'^password-reset/$', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    url(r'^password-reset/done/$', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    url(r'^reset/done/$', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path("machine/<int:id>", views.machine),
 ] 
 
