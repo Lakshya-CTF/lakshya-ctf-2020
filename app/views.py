@@ -49,7 +49,7 @@ def teamlogin(request):
 
 
 def register(request):
-	''' TODO:Store email from events table'''
+	
 	team = Team()
 	if request.method == "POST":
 
@@ -58,8 +58,9 @@ def register(request):
 		team.password = make_password(request.POST.get("passwd"))
 		
 		if settings.MODE == 'production':
-			query_count = (Events.objects.using("receipts").filter(
-			receiptid = receiptid).count())
+			result = Events.objects.using("receipts").filter(receiptid = receiptid)
+			query_count = len(result)
+			team.email = result[0].email1
 
 		elif settings.MODE == 'development':
 			query_count = (Events.objects.filter(receiptid = receiptid).count())
@@ -293,6 +294,7 @@ def hint(request):
 			request.user.points -= int(0.1 * questionPoints)
 			request.user.save()
 			TakenQuestionHint(question = question,user = request.user, hint = True).save()
+			SolvedTimestamps(username = request.user,points = request.user.points).save()
 		
 		return JsonResponse({
 			"hint": questionHint,
