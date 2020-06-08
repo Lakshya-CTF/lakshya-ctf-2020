@@ -24,7 +24,7 @@
         
         <link rel="stylesheet" href="{% static 'app/css/main.css' %}">
 
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.css" integrity="sha256-/n6IXDwJAYIh7aLVfRBdduQfdrab96XZR+YjG42V398=" crossorigin="anonymous" />
         
 
         
@@ -90,15 +90,19 @@
                             <div class="col-md-3">
                                 <div class="row justify-content-center">
                                     <!-- @ToDo : if user has an image then display here else keep the default image -->
+                                    
                                     <div class="profile-img" title="click to change">
                                         <img id="profileImage"  src="{% static 'app/images/bg.jpg' %}" />
+                                        {% if request.user.is_authenticated %}
                                         <div class="hover-top">
                                             <div class="hover-text">
                                                 Click to Update
                                             </div>
                                         </div>
+
                                     </div>
                                     <input style="display: none;" id="imageUpload" type="file" name="profile_photo" placeholder="Photo" required="" capture>
+                                        {%  endif %}
                                 <h5 class="normalFont text-center mt-3">{{user.first_name}}&nbsp;{{user.last_name}}</h5>
                                 </div>
                             </div>
@@ -158,14 +162,27 @@
         <script src="{% static 'app/js/preloader.js' %}"></script>
         <script src="{% static 'app/js/moment.min.js' %}"></script>
         <script src="{% static 'app/js/chart.min.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.js" integrity="sha256-bQTfUf1lSu0N421HV2ITHiSjpZ6/5aS6mUNlojIGGWg=" crossorigin="anonymous"></script>
 
   
     <script>
             // @ToDo : upload uploader.files[0] in our storage
         // photo upload script
-        $("#profileImage").click(function(e) {
-            $("#imageUpload").click();
-        });
+        $uploadCrop = $('#profileImage').croppie({
+    enableExif: true,
+    viewport: {
+        width: 200,
+        height: 200,
+        type: 'circle'
+    },
+    boundary: {
+        width: 300,
+        height: 300
+    }
+});
+        // $("#profileImage").click(function(e) {
+        //     $("#imageUpload").click();
+        // });
 
         $(".hover-top").click(function(e) {
             $("#imageUpload").click();

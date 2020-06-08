@@ -21,7 +21,7 @@ class Team(AbstractUser):
     points = models.IntegerField(default=0)
     timeRequired = models.FloatField(default=0,verbose_name="Time required")
     lastSubmission = models.DateTimeField(default=timezone.now,verbose_name="Last submission")
-
+    
     def convert(self):
         return f"{self.lastSubmission.day}-{self.lastSubmission.month}-{self.lastSubmission.year} {self.lastSubmission.hour}:{self.lastSubmission.minute}:{self.lastSubmission.second}"
 
