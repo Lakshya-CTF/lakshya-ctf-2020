@@ -56,7 +56,24 @@
                         <a href="/about" class="p-3 text-decoration-none text-light bold">About</a>
                         <a href="/leaderboard" class="p-3 text-decoration-none text-light bold">Leaderboard</a>
                         <a href="/quest" class="p-3 text-decoration-none text-light bold">Challenges</a>
-                        <a href="/logout" class="p-3 text-decoration-none text-light bold">Logout</a>
+                        {% if  request.user.is_authenticated %}
+                        <div class="btn-group" >
+                            <a class="dropdown-toggle p-3 text-decoration-none text-light bold" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <svg class="bi bi-person-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+</svg>
+                          </a>
+                          <div class="dropdown-menu" x-placement="bottom-start" style="">
+                            <a class="dropdown-item text-decoration-none text-light bold" href="/user/{{request.user.username}}">My Profile</a>
+                            <a class="dropdown-item text-decoration-none text-light bold" href="/password-reset/">Reset Password</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/logout" class="dropdown-item text-decoration-none text-light bold">Logout</a>
+                          </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </nav>
@@ -123,41 +140,7 @@
                             </div>
                         </div>
                         <!-- @ToDo : check if user's own profile => do nothing; else do not show the below div -->
-                        {% if request.user.is_authenticated %}
-                        <div class="col-md-12 mt-5">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Machine Access Details</h5>
-                                </div>
-                                <div class="card-body">
-                                    <table class="access-details" style="width: 100%;">
-                                        <tr>
-                                            <td>Server</td>
-                                            <td>afj.asdfjlksdf</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Port</td>
-                                            <td>1337</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Server Status</td>
-                                            <!-- color #9acc14 / d73e36  -->
-                                            <!-- color green  /  red  -->
-                                            <td style="color:#9acc14">Connected</td>
-                                        </tr>
-                                        <tr>
-                                            <td>IPV4</td>
-                                            <td>10.01.10.1</td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn btn-outline-success btn-shadow px-3 my-2 ml-0 ml-sm-1 text-left">Connection Pack</button></td>
-                                            <td><button class="btn btn-outline-danger btn-shadow px-3 my-2 ml-0 ml-sm-1 text-left">Regenerate</button></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
+                       
                     </div>
                     <!-- <h1 class="display-1 bold color_white content__title text-center"><span class="color_danger">PROFILE</span><span class="vim-caret">&nbsp;</span></h1> -->
                 </div>

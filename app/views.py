@@ -63,6 +63,7 @@ def register(request):
 			result = Events.objects.using("receipts").filter(receiptid = receiptid)
 			query_count = len(result)
 			team.email = result[0].email1
+			team.first_name = result[0].name1
 
 		elif settings.MODE == 'development':
 			query_count = (Events.objects.filter(receiptid = receiptid).count())
@@ -82,6 +83,7 @@ def register(request):
 
 
 def profile(request,username):
+	'''TODO: Add new model field for user flags'''
 	user = get_object_or_404(Team,username = username)
 	rank = Team.objects.filter(points__gt = user.points,lastSubmission__gt = user.lastSubmission).count()
 
@@ -99,7 +101,7 @@ def profile(request,username):
 
 	stats = list(stats_dict.values())
 
-	return render(request,"app/profile.html",{"user":user,"user_owns":user_owns,"root_owns":root_owns,"timestamps":timestamps,"stats":stats,"rank":rank})
+	return render(request,"app/profile.html",{"user":user,"user_owns":root_owns,"root_owns":root_owns,"timestamps":timestamps,"stats":stats,"rank":rank})
 
 def index(request):
 	return render(request, "app/index.html")
