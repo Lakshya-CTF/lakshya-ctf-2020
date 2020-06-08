@@ -167,22 +167,22 @@
   
     <script>
             // @ToDo : upload uploader.files[0] in our storage
-        // photo upload script
-        $uploadCrop = $('#profileImage').croppie({
-    enableExif: true,
-    viewport: {
-        width: 200,
-        height: 200,
-        type: 'circle'
-    },
-    boundary: {
-        width: 300,
-        height: 300
-    }
-});
-        // $("#profileImage").click(function(e) {
-        //     $("#imageUpload").click();
-        // });
+//         // photo upload script
+//         $uploadCrop = $('#profileImage').croppie({
+//     enableExif: true,
+//     viewport: {
+//         width: 200,
+//         height: 200,
+//         type: 'circle'
+//     },
+//     boundary: {
+//         width: 300,
+//         height: 300
+//     }
+// });
+        $("#profileImage").click(function(e) {
+            $("#imageUpload").click();
+        });
 
         $(".hover-top").click(function(e) {
             $("#imageUpload").click();
