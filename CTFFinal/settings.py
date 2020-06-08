@@ -213,7 +213,7 @@ if MODE == 'production':
 	SECURE_REFERRER_POLICY = 'same-origin'
 
 
-if MODE == 'production':
+if MODE == 'development':
 	EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
 else:
 	EMAIL_HOST = os.environ.get("EMAIL_HOST")
