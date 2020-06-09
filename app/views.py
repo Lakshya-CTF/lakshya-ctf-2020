@@ -59,14 +59,14 @@ def register(request):
 		team.username = request.POST.get("teamname")
 		team.password = make_password(request.POST.get("passwd"))
 		
-		if settings.MODE == 'production':
-			result = Events.objects.using("receipts").filter(receiptid = receiptid)
-			query_count = len(result)
-			team.email = result[0].email1
-			team.first_name = result[0].name1
+		# if settings.MODE == 'production':
+		# 	result = Events.objects.using("receipts").filter(receiptid = receiptid)
+		# 	query_count = len(result)
+		# 	team.email = result[0].email1
+		# 	team.first_name = result[0].name1
 
-		elif settings.MODE == 'development':
-			query_count = (Events.objects.filter(receiptid = receiptid).count())
+		# elif settings.MODE == 'development':
+		# 	query_count = (Events.objects.filter(receiptid = receiptid).count())
 		
 		try:
 			if receiptid == 'EINC-0':
