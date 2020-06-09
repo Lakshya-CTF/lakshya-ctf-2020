@@ -268,7 +268,7 @@ def quest(request):
 
 
 def leaderboard(request):
-	teams = (Team.objects.all().order_by(
+	teams = (Team.objects.all().exclude(username = 'chaitanyarahalkar').order_by(
 		"-points", "lastSubmission")[:10])
 	leaderboard = list()
 	for rank, team in zip(range(1, len(teams) + 1), teams):
