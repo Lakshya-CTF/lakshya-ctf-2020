@@ -69,7 +69,9 @@ def register(request):
 			query_count = (Events.objects.filter(receiptid = receiptid).count())
 		
 		try:
-			if query_count == 0:
+			if receiptid == 'EINC-0':
+				pass
+			elif query_count == 0:
 				raise TypeError
 
 			team.clean_fields()
