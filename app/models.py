@@ -45,7 +45,7 @@ class Questions(models.Model):
     questionData = models.FileField(blank=True,verbose_name = "Data")
     questionFlag = models.CharField(max_length=50,
                                     default="lakshya_CTF{hack_me_now}")
-    questionHint = models.TextField(default="Sample hint",verbose_name = "Flag")
+    questionHint = models.TextField(default="Sample hint",verbose_name = "Hint")
     questionSolvers = models.IntegerField(default=0,verbose_name = "Solvers")
     questionType = models.CharField(max_length = 15,choices = QUESTION_CATEGORY, default = "web",verbose_name = "Category")
 
