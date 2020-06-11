@@ -83,10 +83,8 @@ def profile(request,username):
 	'''TODO: Add new model field for user flags'''
 	user = get_object_or_404(Team,username = username)
 	rank = Team.objects.filter(points__gt = user.points,lastSubmission__gt = user.lastSubmission).count()
-
-	if rank == 0:
-		rank = 1
-
+	rank += 1
+	
 	root_owns = SolvedMachines.objects.filter(user = user,root=True).count()
 	timestamps = SolvedTimestamps.objects.filter(username = user)
 	vals = SolvedQuestions.objects.filter(user = user)
