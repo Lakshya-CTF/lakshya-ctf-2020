@@ -13,7 +13,7 @@ MEDIUM = "ME"
 HARD = "HA"
 
 CATEGORY_CHOICE = ((EASY, "Easy"), (MEDIUM, "Medium"), (HARD, "Hard"))
-QUESTION_CATEGORY = (("web", "Web"), ("reversing", "Reversing"), ("steg", "Steganography"),("pwning","Pwning"),("crypt","Cryptography"),("misc","Miscellaneous"))
+QUESTION_CATEGORY = (("web", "Web"), ("reversing", "Reversing"), ("steg", "Steganography"),("foren","Forensics"),("crypt","Cryptography"),("misc","Miscellaneous"))
 
 
 class Team(AbstractUser):
@@ -31,7 +31,7 @@ class Team(AbstractUser):
 
 class TeamAdmin(admin.ModelAdmin):
 
-    list_display = ("username", "timeRequired", "points")
+    list_display = ("username", "timeRequired", "points","email")
     readonly_fields = ("password", "points", "timeRequired")
     search_fields = ["username", "timeRequired", "points"]
 

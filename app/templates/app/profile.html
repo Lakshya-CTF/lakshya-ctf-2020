@@ -47,7 +47,7 @@
         </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a href="index.html" class="pl-md-0 p-3 text-decoration-none text-light">
+                        <a href="/" class="pl-md-0 p-3 text-decoration-none text-light">
                             <h3 class="bold"><span class="color_danger">LAKSHYA</span><span class="color_white">CTF</span></h3>
                         </a>
                     </div>
@@ -93,12 +93,12 @@
                                     
                                     <div class="profile-img" title="click to change">
                                         <img id="profileImage"  src="{% static 'app/images/bg.jpg' %}" />
-                                        {% if request.user.is_authenticated %}
+                                        <!-- {% if request.user.is_authenticated %}
                                         <div class="hover-top">
                                             <div class="hover-text">
                                                 Click to Update
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                     </div>
                                     <input style="display: none;" id="imageUpload" type="file" name="profile_photo" placeholder="Photo" required="" capture>
@@ -162,8 +162,7 @@
         <script src="{% static 'app/js/preloader.js' %}"></script>
         <script src="{% static 'app/js/moment.min.js' %}"></script>
         <script src="{% static 'app/js/chart.min.js' %}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.js" integrity="sha256-bQTfUf1lSu0N421HV2ITHiSjpZ6/5aS6mUNlojIGGWg=" crossorigin="anonymous"></script>
-
+        
   
     <script>
             // @ToDo : upload uploader.files[0] in our storage

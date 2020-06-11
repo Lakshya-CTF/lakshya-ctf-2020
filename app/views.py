@@ -38,10 +38,7 @@ def teamlogin(request):
 		team = authenticate(username=username, password=password)
 		if team is not None:
 			login(request, team)
-			#if not 'time' in request.session:
-			#	request.session['time'] = timezone.localtime().timestamp()
-			#	request.session.save()
-
+			
 			return redirect("/quest")
 
 		else:
@@ -59,25 +56,23 @@ def register(request):
 		team.username = request.POST.get("teamname")
 		team.password = make_password(request.POST.get("passwd"))
 		
-		# if settings.MODE == 'production':
-		# 	result = Events.objects.using("receipts").filter(receiptid = receiptid)
-		# 	query_count = len(result)
-		# 	team.email = result[0].email1
-		# 	team.first_name = result[0].name1
+		if settings.MODE == 'production':
+			result = Events.objects.using("receipts").filter(receiptid = receiptid)
+			query_count = len(result)
+			team.email = result[0].email1
+			team.first_name = result[0].name1
 
-		# elif settings.MODE == 'development':
-		# 	query_count = (Events.objects.filter(receiptid = receiptid).count())
+		elif settings.MODE == 'development':
+			query_count = (Events.objects.filter(receiptid = receiptid).count())
 		
 		try:
-			if receiptid == 'EINC-0':
-				pass
-			elif query_count == 0:
+			if query_count == 0:
 				raise TypeError
 
 			team.clean_fields()
 			team.save()
 		except Exception as e:
-			messages.error(request, "Invalid form submission!")
+			messages.error(request, "Invalid form submission! Check your data correctly.")
 			return render(request, "app/register.html")
 		login(request, team)
 		return render(request, "app/instructions.html")
@@ -96,7 +91,7 @@ def profile(request,username):
 	timestamps = SolvedTimestamps.objects.filter(username = user)
 	vals = SolvedQuestions.objects.filter(user = user)
 
-	stats_dict = {"web":0,"reversing":0 ,"steg":0 ,"pwning":0,"crypt":0,"misc":0,"machines":root_owns}
+	stats_dict = {"web":0,"reversing":0 ,"steg":0 ,"foren":0,"crypt":0,"misc":0,"machines":root_owns}
 
 	for val in vals:
 		stats_dict[val.question.questionType] += 1
@@ -118,7 +113,7 @@ def instructions(request):
 def about(request):
 	return render(request, "app/about.html")
 
-
+@login_required(login_url="/login/")
 def waiting(request):
 	return render(request,"app/waiting.html")
 
@@ -145,7 +140,7 @@ def machine(request,id = 1):
 			if not solved:
 				
 				request.user.points += int((0.4) * machine.machinePoints)
-				request.user.lastSubmission = timezone.localtime.now()
+				request.user.lastSubmission = timezone.localtime().now()
 				messages.success(request,"User flag is correct!")
 				request.user.save()
 				SolvedMachines(machine = machine, user = request.user).save()
@@ -180,6 +175,8 @@ def machine(request,id = 1):
 					SolvedTimestamps(username=request.user,points=request.user.points).save()
 				else:
 					messages.error(request,"Already solved!")
+			else:
+				messages.error(request,"Submit the user flag before submitting the root flag.")
 
 		else:
 			messages.error(request,"Invalid flag!")
