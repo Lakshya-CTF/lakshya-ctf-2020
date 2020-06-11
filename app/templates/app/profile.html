@@ -89,17 +89,11 @@
                         <div class="row justify-content-center p-3">
                             <div class="col-md-3">
                                 <div class="row justify-content-center">
-                                    <!-- @ToDo : if user has an image then display here else keep the default image -->
+                                    
                                     
                                     <div class="profile-img" title="click to change">
                                         <img id="profileImage"  src="{% static 'app/images/bg.jpg' %}" />
-                                        <!-- {% if request.user.is_authenticated %}
-                                        <div class="hover-top">
-                                            <div class="hover-text">
-                                                Click to Update
-                                            </div>
-                                        </div> -->
-
+                                        
                                     </div>
                                     <input style="display: none;" id="imageUpload" type="file" name="profile_photo" placeholder="Photo" required="" capture>
                                         {%  endif %}
@@ -143,10 +137,10 @@
                                 <canvas id="chart"></canvas>
                             </div>
                         </div>
-                        <!-- @ToDo : check if user's own profile => do nothing; else do not show the below div -->
+                        
                        
                     </div>
-                    <!-- <h1 class="display-1 bold color_white content__title text-center"><span class="color_danger">PROFILE</span><span class="vim-caret">&nbsp;</span></h1> -->
+                   
                 </div>
             </div>
         </div>
@@ -165,20 +159,7 @@
         
   
     <script>
-            // @ToDo : upload uploader.files[0] in our storage
-//         // photo upload script
-//         $uploadCrop = $('#profileImage').croppie({
-//     enableExif: true,
-//     viewport: {
-//         width: 200,
-//         height: 200,
-//         type: 'circle'
-//     },
-//     boundary: {
-//         width: 300,
-//         height: 300
-//     }
-// });
+          
         $("#profileImage").click(function(e) {
             $("#imageUpload").click();
         });
