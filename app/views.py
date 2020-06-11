@@ -91,7 +91,8 @@ def profile(request,username):
 
 	if rank == 0:
 		rank = 1
-	user_owns = SolvedMachines.objects.filter(user = user,root=False).count()
+
+	challenges_solved = SolvedChallenges.objects.filter(user = user).count()
 	root_owns = SolvedMachines.objects.filter(user = user,root=True).count()
 	timestamps = SolvedTimestamps.objects.filter(username = user)
 	vals = SolvedQuestions.objects.filter(user = user)
@@ -103,7 +104,7 @@ def profile(request,username):
 
 	stats = list(stats_dict.values())
 
-	return render(request,"app/profile.html",{"user":user,"user_owns":root_owns,"root_owns":root_owns,"timestamps":timestamps,"stats":stats,"rank":rank})
+	return render(request,"app/profile.html",{"user":user,"challenges_solved":challenges_solved,"root_owns":root_owns,"timestamps":timestamps,"stats":stats,"rank":rank})
 
 def index(request):
 	return render(request, "app/index.html")
