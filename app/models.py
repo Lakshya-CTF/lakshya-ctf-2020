@@ -83,7 +83,7 @@ class Machines(models.Model):
     rootFlag = models.CharField(max_length=50,default="lakshya_CTF{hack_me_now}")
 
     def __str__(self):
-        return self.machineIp
+        return self.machineTitle
 
     class Meta:
         verbose_name = "Machine"
