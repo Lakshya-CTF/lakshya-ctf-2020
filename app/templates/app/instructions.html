@@ -111,13 +111,13 @@
                                 <li>Each box is provisioned an IP address. You need to perform reconissance to get information about what services are running on the box.</li>
                                 <li> There are two flags associated with each box - The user flag and the root flag. On successfully submitting the user flag, 40% of the total box points will be awarded, and on successful submission of the root flag, the remaining 60% points will be awarded. </li>
                                 <li> Every box has a user - lakshya created on it. </li>
-                                <li>When you are able to achieve command injection on the box (using some vulnerability or an exploit you crafted), you should read the user flag stored in the system at /home/lakshya/flag.txt. This flag is the password for the user - lakshya on that particular box. In order to escalate the system and gain root access, you can SSH into the machine with - <br>
+                                <li>When you are able to achieve command injection on the box (using some vulnerability or an exploit you crafted), you should read the user flag stored in the system at /home/lakshya/flag.txt. This flag is the password for the user - lakshya for that particular box. In order to escalate the system and gain root access, you can SSH into the machine with - <br>
                                 "ssh lakshya@machine-ip" with the password as the user flag. 
                                 <li> The root flag will be readable only by the root user. By correctly escalating privileges, you can find the root flag at /root/flag.txt. </li>
                                 <li> You are requested not to delete any files on the system that can make the box inaccessible to other users. Every team should be given a fair and equal chance to takle the box. </li>
                                 <li> After you have successfully rooted the box, you should delete your files and exploit programs, to ensure that others don't get hold of them. </li>
                                 <li> To prevent unintended installations and bloatware on the system, we have disabled Internet access on the boxes. Any exploit files you wish to copy should be transferred over scp or any other medium that you are well-versed with.</li>
-                                <li>Do not use Kernel exploits to try and escalate privileges. All the kernels are updated to the latest version. Kernel exploits are prone to brick the system and thus, making it inaccessible for other users. </li>
+                                <li>Do not use Kernel/ distribution specific exploits to try and escalate privileges. All the kernels and distributions are updated to the latest versions. These kind of exploits are prone to brick the system and thus, making it inaccessible for other users. </li>
                             </ul>
                             <h5 class="bold color_white pt-3">
                                 Special Rules and Instructions
