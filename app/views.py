@@ -16,6 +16,7 @@ from django.views.decorators.cache import cache_page
 from django.db.models.query import QuerySet
 from datetime import datetime
 from django.utils.timezone import make_aware
+import pytz
 
 
 def handler404(request, exception, *args, **kwargs):
@@ -147,7 +148,7 @@ def machine(request,id = 1):
 				messages.success(request,"User flag is correct!")
 				request.user.save()
 				SolvedMachines(machine = machine, user = request.user).save()
-				SolvedTimestamps(username=request.user,points=request.user.points,timestamp_record=timezone.localtime()).save()
+				SolvedTimestamps(username=request.user,points=request.user.points,timestamp_record=timezone.localtime(timezone=pytz.timezone("Asia/Calcutta"))).save()
 			else:
 				messages.error(request,"Already solved!")
 
@@ -175,7 +176,7 @@ def machine(request,id = 1):
 					request.user.save()
 					machine.save()
 					m.save()
-					SolvedTimestamps(username=request.user,points=request.user.points,timestamp_record=timezone.localtime()).save()
+					SolvedTimestamps(username=request.user,points=request.user.points,timestamp_record=timezone.localtime(timezone=pytz.timezone("Asia/Calcutta"))).save()
 				else:
 					messages.error(request,"Already solved!")
 			else:
@@ -242,7 +243,7 @@ def quest(request):
 				question.save()
 				request.user.save()
 				SolvedQuestions(question = question, user = request.user).save()
-				SolvedTimestamps(username = request.user,points = request.user.points,timestamp_record=timezone.localtime()).save()
+				SolvedTimestamps(username = request.user,points = request.user.points,timestamp_record=timezone.localtime(timezone=pytz.timezone("Asia/Calcutta"))).save()
 
 				solved_question_ids.append(question.questionId)
 			else:
@@ -314,7 +315,7 @@ def hint(request):
 			request.user.points -= int(0.1 * questionPoints)
 			request.user.save()
 			TakenQuestionHint(question = question,user = request.user, hint = True).save()
-			SolvedTimestamps(username = request.user,points = request.user.points,timestamp_record=timezone.localtime()).save()
+			SolvedTimestamps(username = request.user,points = request.user.points,timestamp_record=timezone.localtime(timezone=pytz.timezone("Asia/Calcutta"))).save()
 		
 		return JsonResponse({
 			"hint": questionHint,
