@@ -84,11 +84,11 @@ def register(request):
 def profile(request,username):
 	'''TODO: Fix ranking issue'''
 	user = get_object_or_404(Team,username = username)
-	rank = Team.objects.filter(points__gt = user.points,lastSubmission__lt = user.lastSubmission).order_by("-points","lastSubmission").exclude(username = "chaitanyarahalkar").count()
-	if rank == 0:
-		rank = 1
-	else:
-		rank += 1
+	# rank = Team.objects.filter(points__gt = user.points,lastSubmission__lt = user.lastSubmission).order_by("-points","lastSubmission").exclude(username = "chaitanyarahalkar").count()
+	# if rank == 0:
+	# 	rank = 1
+	# else:
+	# 	rank += 1
 	
 	root_owns = SolvedMachines.objects.filter(user = user,root=True).count()
 	timestamps = SolvedTimestamps.objects.filter(username = user)
@@ -101,7 +101,7 @@ def profile(request,username):
 
 	stats = list(stats_dict.values())
 
-	return render(request,"app/profile.html",{"user":user,"challenges_solved":len(vals),"root_owns":root_owns,"timestamps":timestamps,"stats":stats,"rank":rank})
+	return render(request,"app/profile.html",{"user":user,"challenges_solved":len(vals),"root_owns":root_owns,"timestamps":timestamps,"stats":stats})
 
 def index(request):
 	return render(request, "app/index.html")
@@ -147,7 +147,7 @@ def machine(request,id = 1):
 				messages.success(request,"User flag is correct!")
 				request.user.save()
 				SolvedMachines(machine = machine, user = request.user).save()
-				SolvedTimestamps(username=request.user,points=request.user.points).save()
+				SolvedTimestamps(username=request.user,points=request.user.points,timestamp_record=timezone.localtime()).save()
 			else:
 				messages.error(request,"Already solved!")
 
@@ -175,7 +175,7 @@ def machine(request,id = 1):
 					request.user.save()
 					machine.save()
 					m.save()
-					SolvedTimestamps(username=request.user,points=request.user.points).save()
+					SolvedTimestamps(username=request.user,points=request.user.points,timestamp_record=timezone.localtime()).save()
 				else:
 					messages.error(request,"Already solved!")
 			else:
@@ -242,7 +242,7 @@ def quest(request):
 				question.save()
 				request.user.save()
 				SolvedQuestions(question = question, user = request.user).save()
-				SolvedTimestamps(username = request.user,points = request.user.points).save()
+				SolvedTimestamps(username = request.user,points = request.user.points,timestamp_record=timezone.localtime()).save()
 
 				solved_question_ids.append(question.questionId)
 			else:
@@ -314,7 +314,7 @@ def hint(request):
 			request.user.points -= int(0.1 * questionPoints)
 			request.user.save()
 			TakenQuestionHint(question = question,user = request.user, hint = True).save()
-			SolvedTimestamps(username = request.user,points = request.user.points).save()
+			SolvedTimestamps(username = request.user,points = request.user.points,timestamp_record=timezone.localtime()).save()
 		
 		return JsonResponse({
 			"hint": questionHint,
