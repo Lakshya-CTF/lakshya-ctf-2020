@@ -223,7 +223,7 @@ def quest(request):
 
 				request.user.points += question.questionPoints
 				request.user.lastSubmission = timezone.localtime().now()
-				
+				print("time",request.user.lastSubmission)
 				question.questionSolvers += 1
 
 				if rating == "EA":
