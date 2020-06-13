@@ -14,6 +14,8 @@ from django.utils import timezone
 from constance import config
 from django.views.decorators.cache import cache_page
 from django.db.models.query import QuerySet
+from datetime import datetime
+from django.utils.timezone import make_aware
 
 
 def handler404(request, exception, *args, **kwargs):
@@ -141,7 +143,7 @@ def machine(request,id = 1):
 			if not solved:
 				
 				request.user.points += int((0.4) * machine.machinePoints)
-				request.user.lastSubmission = timezone.localtime().now()
+				request.user.lastSubmission = timezone.localtime()
 				messages.success(request,"User flag is correct!")
 				request.user.save()
 				SolvedMachines(machine = machine, user = request.user).save()
@@ -168,7 +170,7 @@ def machine(request,id = 1):
 						machine.hardRating += 1
 
 					request.user.points += int((0.6) * machine.machinePoints)
-					request.user.lastSubmission = timezone.localtime().now()
+					request.user.lastSubmission = timezone.localtime()
 					messages.success(request,"Root flag is correct!")
 					request.user.save()
 					machine.save()
@@ -222,7 +224,7 @@ def quest(request):
 			if not solved:
 
 				request.user.points += question.questionPoints
-				request.user.lastSubmission = timezone.localtime().now()
+				request.user.lastSubmission = timezone.localtime()
 				print("time",request.user.lastSubmission)
 				question.questionSolvers += 1
 
