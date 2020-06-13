@@ -90,7 +90,7 @@ if MODE == 'development':
 	}
 
 elif MODE == 'production':
-	SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+	
 	DATABASES = {
 	
 		"default": dj_database_url.config(),
