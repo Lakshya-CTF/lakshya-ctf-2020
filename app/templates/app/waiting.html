@@ -99,40 +99,55 @@
                     </p>
                     <div class="row justify-content-center  hackerFont">
                         <div class="col-md-10">
-                             <h5 class="bold color_white pt-3">
+                           <h5 class="bold color_white pt-3">
                                 General Rules and Instructions
                             </h5>
                             <ul>
-                                <li>When you start the CTF, 45 minutes will be alloted to complete the challenges.</li>
+                                <li>The username that you would create would serve as your team name. Please share the credentials with your teammate (if any) and ask them to login using the same credentials. Immediately contact the team if you are facing any issues with registration. Our contact information is available <a href='/about'> here.</a></li>
+                                <li>From the start of the event, 24 hours will be alloted to complete the challenges and boxes. The event will get over on <span class="vim-caret"> 15 June, 2020 at 12:00 PM.</span></li>
                                 <li>Each question has some points to it depending upon the difficulty. Taking a hint will deduce 10% of the points associated with the question. </li>
                                 <li>There is no particular order of solving the questions.</li>
-                                <li>Judging of the round will be based on two parameters. The first is the score of the team and second is the time required. </li>
-                                <li>Ranks can be viewed on the leaderboard page. The leaderboard time is updated everytime a submission is made.</li>
-                                <li>Flags found are of the format <span class="vim-caret">lakshya_ctf{some_text}.</span> Some of the files may contain just the inner text within the brackets. Make sure you submit it in the format specified. Flag text is not
-                                    case sensitive.</li>
+                                <li>Judging of the round will be based on two parameters. If there is a tie-breaker at points, the last submission time of the last solved question will be used as a secondary parameter to rank the users. The user having an earlier last-submission-timestamp will be ranked higher, in case of a tie-break.</li>
+                                <li>Ranks can be viewed on the leaderboard page. The leaderboard is updated every time a challenge or box is solved or a hint is taken.</li>
+                                <li>Flags found are of the format <span class="vim-caret">lakshya_CTF{some_text}.</span> Some of the files may contain just the inner text within the brackets. Make sure you submit it in the format specified. Flag text is <span class="vim-caret"> not case sensitive. </span></li>
                                 <li>This is a competitive environment with the aim of learning cyber security and ethical hacking. Please do not share the flags & solutions with others.</li>
-                                <li>Internet access is granted. Feel free to explore and read about the concept behind the problem. </li>
+                                <li>Feel free to explore and read about the concept behind the problem. </li>
+
+                            </ul>
+                             <h5 class="bold color_white pt-3">
+                                Instructions for Solving Boxes
+                            </h5>
+                            <ul>
+                                <li>Each box is provisioned an IP address. You need to perform reconissance to get information about what services are running on the box.</li>
+                                <li> Each box has its dedicated page, which can be seen by clicking on the machine card on the challenges' page. This dedicated page can provide useful informat
+                                <li> There are two flags associated with each box - The user flag and the root flag. On successfully submitting the user flag, 40% of the total box points will be awarded, and on successful submission of the root flag, the remaining 60% points will be awarded. </li>
+                                <li> Every box has a user - lakshya created on it. </li>
+                                <li>When you are able to achieve command injection on the box (using some vulnerability or an exploit you crafted), you should read the user flag stored in the system at /home/lakshya/flag.txt. This flag is the password for the user - lakshya for that particular box. In order to escalate the system and gain root access, you can SSH into the machine with - <br>
+                                "ssh lakshya@machine-ip" with the password as the user flag. 
+                                <li> The root flag will be readable only by the root user. By correctly escalating privileges, you can find the root flag at /root/flag.txt. </li>
+                                <li> You are requested not to delete any files on the system that can make the box inaccessible to other users. Every team should be given a fair and equal chance to takle the box. </li>
+                                <li> After you have successfully rooted the box, you should delete your files and exploit programs, to ensure that others don't get hold of them. </li>
+                                <li> To prevent unintended installations and bloatware on the system, we have disabled Internet access on the boxes. Any exploit files you wish to copy should be transferred over scp or any other medium that you are well-versed with.</li>
+                                <li>Do not use Kernel/ distribution specific exploits to try and escalate privileges. All the kernels and distributions are updated to the latest versions. These kind of exploits are prone to brick the system and thus, making it inaccessible for other users. </li>
                             </ul>
                             <h5 class="bold color_white pt-3">
                                 Special Rules and Instructions
                             </h5>
                             <ul>
-                                <li>Dont try to hack anything apart from this CTF Network </li>
-                                <li>Dont try to hack other members </li>
-                                <li>Dont spoil! Dont share how you solved each challenge with other members. </li>
-                                <li>Performing denial of service attacks on the server will lead to disqualification. You are requested to play ethically.</li>
+                                <li> If you have any queries, or problems you can contact us <a href='/about'> here.</a> Our team will be available for questions and problems throughout the event.
+                                <li>Performing denial of service attacks on the server will lead to disqualification.</li>
                                 <li>Brute force attacks on the flag form is prohibited.</li>
-                                <li>Remember, once the timer starts, it can't be paused. The timer will not resume if you logout and log back in.</li>
+                                <li>If you find a vulnerability in the website, feel free to use it for your advantage, until we patch it! </li>
+                                <li>The write-ups for the challenges and boxes will be released after the CTF is over. </li>
                             </ul>
                             <div class="row text-center pt-5">
-                            <div class="col-xl-12">
-                                    <button id="hack" class="btn btn-outline-danger btn-shadow px-3 my-2 ml-0 ml-sm-1 text-left typewriter" onclick="(function(){window.location.href='/quest'})();">
+                                <div class="col-xl-12">
+                                    <button class="btn btn-outline-danger btn-shadow px-3 my-2 ml-0 ml-sm-1 text-left typewriter" onclick="(function(){window.location.href='/quest'})();">
                                         <h4>LET'S HACK!</h4>
                                     </button>
-                                
+                                    <small id="registerHelp" class="mt-2 form-text text-muted">We expect you to adhere by the rules. Failure to do so might result in disqualification.</small>
+                                </div>
                             </div>
-                          
-                        </div>
                     </div>
                 </div>
             </div>

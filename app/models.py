@@ -93,7 +93,7 @@ class Machines(models.Model):
 class SolvedTimestamps(models.Model):
 
     username = models.ForeignKey(Team, on_delete=models.CASCADE)
-    timestamp_record = models.DateTimeField(default=timezone.now)
+    timestamp_record = models.DateTimeField(default=timezone.localtime)
     points = models.IntegerField(default=0)
 
     def convert(self):
