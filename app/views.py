@@ -80,10 +80,13 @@ def register(request):
 
 
 def profile(request,username):
-	'''TODO: Add new model field for user flags'''
+	'''TODO: Fix ranking issue'''
 	user = get_object_or_404(Team,username = username)
 	rank = Team.objects.filter(points__gt = user.points,lastSubmission__gt = user.lastSubmission).count()
-	rank += 1
+	if rank == 0:
+		rank = 1
+	else:
+		rank += 1
 	
 	root_owns = SolvedMachines.objects.filter(user = user,root=True).count()
 	timestamps = SolvedTimestamps.objects.filter(username = user)
@@ -131,10 +134,10 @@ def machine(request,id = 1):
 	
 	if request.method == "POST":
 		rating = request.POST.get("radio_btn")
-		flag = request.POST.get("flag")
+		flag = request.POST.get("flag").strip().lower()
 		solved = SolvedMachines.objects.filter(machine = machine,user=request.user)
 
-		if machine.userFlag == flag:
+		if machine.userFlag.strip().lower() == flag:
 			if not solved:
 				
 				request.user.points += int((0.4) * machine.machinePoints)
@@ -146,7 +149,7 @@ def machine(request,id = 1):
 			else:
 				messages.error(request,"Already solved!")
 
-		elif machine.rootFlag == flag:
+		elif machine.rootFlag.strip().lower() == flag:
 			
 			if isinstance(solved,QuerySet):
 				m = solved[0]
@@ -208,14 +211,14 @@ def quest(request):
 
 	if request.method == "POST":
 
-		flag = request.POST.get("flag")
+		flag = request.POST.get("flag").strip().lower()
 		flag_id = int(request.POST.get("qid"))
 		rating = request.POST.get("radio_btn")
 		question = Questions.objects.get(questionId=flag_id)
 		solved = SolvedQuestions.objects.filter(question=question,user=request.user)
 
 
-		if flag == question.questionFlag:
+		if flag == question.questionFlag.strip().lower():
 			if not solved:
 
 				request.user.points += question.questionPoints
