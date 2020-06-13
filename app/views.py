@@ -82,7 +82,7 @@ def register(request):
 def profile(request,username):
 	'''TODO: Fix ranking issue'''
 	user = get_object_or_404(Team,username = username)
-	rank = Team.objects.filter(points__gt = user.points,lastSubmission__lt = user.lastSubmission).exclude(username = "chaitanyarahalkar").count()
+	rank = Team.objects.filter(points__gt = user.points,lastSubmission__lt = user.lastSubmission).order_by("-points","lastSubmission").exclude(username = "chaitanyarahalkar").count()
 	if rank == 0:
 		rank = 1
 	else:
