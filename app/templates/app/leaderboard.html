@@ -108,7 +108,7 @@
                                         <th scope="row">{{ rank }}</th>
                                         <td>{{ team.username }}</td>
                                         <td>{{ team.points }}</td>
-                                        <td>{{ team.lastSubmission|date:"d/m/Y G:i:s" }}</td>
+                                        <td>{{ team.lastSubmission|date:"d-m-Y G:i:s" }}</td>
                                     </tr>
                                 </tbody>
                             {% endfor %}
@@ -134,7 +134,7 @@
         {% for username in usernames %}
             var data = [];
             {% for i in username.data %}
-                data.push({x: '{{ i.convert }}', y: {{ i.points}} });
+                data.push({x: '{{ i.lastSubmission|date:"d-m-Y G:i:s" }}', y: {{ i.points}} });
             {% endfor %}
 
 
